@@ -13,7 +13,7 @@
     <ImageView
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:src="@drawable/ic_checkmark"
+        android:src="@drawable/ic_launcher_background"
         android:layout_marginBottom="32dp"
         android:contentDescription="Success Checkmark" />
 

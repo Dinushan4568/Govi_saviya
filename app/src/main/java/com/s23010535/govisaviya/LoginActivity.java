@@ -1,4 +1,4 @@
-package com.23010535.govisaviya;
+package com.s23010535.govisaviya;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,8 +28,6 @@ public class LoginActivity extends AppCompatActivity {
         etUsername = findViewById(R.id.et_username);
         etPassword = findViewById(R.id.et_password);
         btnLogin = findViewById(R.id.btn_login);
-        btnFacebook = findViewById(R.id.btn_facebook);
-        btnGoogle = findViewById(R.id.btn_google);
         tvCreateAccount = findViewById(R.id.tv_create_account);
         tvForgotPassword = findViewById(R.id.tv_forgot_password);
     }
@@ -64,20 +62,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
                 startActivity(intent);
-            }
-        });
-
-        btnFacebook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(LoginActivity.this, "Facebook login not implemented", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        btnGoogle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(LoginActivity.this, "Google login not implemented", Toast.LENGTH_SHORT).show();
             }
         });
     }

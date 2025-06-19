@@ -1,4 +1,4 @@
-package com.23010535.govisaviya;
+package com.s23010535.govisaviya;
 
 import android.content.Intent;
 import android.os.Bundle;

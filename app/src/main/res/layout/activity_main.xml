@@ -10,7 +10,7 @@
     <ImageView
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:src="@drawable/ic_plant_logo"
+        android:src="@drawable/ic_launcher_background"
         android:layout_marginBottom="32dp"
         android:contentDescription="Coin Saving Logo" />
 

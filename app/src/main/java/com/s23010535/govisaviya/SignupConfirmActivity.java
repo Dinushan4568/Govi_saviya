@@ -1,4 +1,4 @@
-package com.23010535.govisaviya;
+package com.s23010535.govisaviya;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -61,11 +61,7 @@ public class SignupConfirmActivity extends AppCompatActivity {
         finish();
     }
 
-    @Override
-    public void onBackPressed() {
-        // Prevent going back during confirmation
-        navigateToHome();
-    }
+
 
     @Override
     protected void onDestroy() {

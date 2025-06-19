@@ -1,4 +1,4 @@
-package com.23010535.govisaviya;
+package com.s23010535.govisaviya;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,13 +31,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setupClickListeners() {
-        ivSettings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, SettingsActivity.class);
-                startActivity(intent);
-            }
-        });
+
 
         llColorBlue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,17 +66,5 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        // Show exit confirmation dialog
-        new androidx.appcompat.app.AlertDialog.Builder(this)
-                .setTitle("Exit App")
-                .setMessage("Are you sure you want to exit?")
-                .setPositiveButton("Yes", (dialog, which) -> {
-                    finishAffinity();
-                    System.exit(0);
-                })
-                .setNegativeButton("No", null)
-                .show();
-    }
+
 }

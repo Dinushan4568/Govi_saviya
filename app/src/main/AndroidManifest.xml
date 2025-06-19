@@ -28,6 +28,10 @@
         <activity android:name=".HomeActivity" android:exported="false" />
         <activity android:name=".OtpActivity" android:exported="false" />
 
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
     </application>
 
 </manifest>

@@ -40,7 +40,7 @@
         android:backgroundTint="#8DF3AF"
         android:fontFamily="sans-serif-medium"
         android:text="Login"
-        android:textColor="@color/green_primary"
+        android:textColor="@color/black"
         android:textSize="16sp" />
 
 
@@ -60,6 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Forget Password"
+        android:layout_marginTop="50dp"
         android:textColor="@android:color/holo_blue_bright"
         android:textSize="14sp"
         android:layout_gravity="center_horizontal"

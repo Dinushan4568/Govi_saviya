@@ -3,44 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/green_primary"
+    android:background="@drawable/main_dashboard"
     android:gravity="center"
     android:padding="32dp">
-
-    <ImageView
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:src="@drawable/ic_launcher_background"
-        android:layout_marginBottom="32dp"
-        android:contentDescription="Coin Saving Logo" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Welcome to"
-        android:textSize="24sp"
-        android:textColor="@android:color/white"
-        android:fontFamily="sans-serif-light"
-        android:layout_marginBottom="8dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Coin\nSaving"
-        android:textSize="32sp"
-        android:textColor="@android:color/white"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center"
-        android:layout_marginBottom="48dp" />
 
     <Button
         android:id="@+id/btn_get_started"
         android:layout_width="200dp"
         android:layout_height="48dp"
+        android:layout_marginTop="690dp"
+        android:backgroundTint="#00FFFFFF"
+        android:fontFamily="@font/kaushan_script"
         android:text="Tap to start"
-        android:textColor="@color/green_primary"
-        android:background="@drawable/button_white_rounded"
-        android:textSize="16sp"
-        android:fontFamily="sans-serif-medium" />
+        android:textColor="@color/white"
+        android:textSize="16sp" />
 
 </LinearLayout>

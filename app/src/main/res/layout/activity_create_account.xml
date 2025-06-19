@@ -3,22 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/yellow_primary"
+    android:background="@drawable/create_account"
     android:padding="32dp">
-
-    <ImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:src="@drawable/ic_launcher_background"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="24dp"
-        android:contentDescription="Logo" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Create Account"
+        android:layout_marginTop="350dp"
         android:textSize="24sp"
         android:textColor="@android:color/black"
         android:fontFamily="sans-serif-medium"

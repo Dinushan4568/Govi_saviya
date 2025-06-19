@@ -16,6 +16,6 @@
         android:fontFamily="@font/kaushan_script"
         android:text="Tap to start"
         android:textColor="@color/white"
-        android:textSize="16sp" />
+        android:textSize="20sp" />
 
 </LinearLayout>

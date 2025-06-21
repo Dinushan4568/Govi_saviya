@@ -4,171 +4,78 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private ImageView ivSettings;
-    private LinearLayout llColorBlue, llColorPurple, llColorYellow, llColorBrown;
+    private TextView tvLocation, tvTemperature, tvCondition;
+    private final String API_KEY = "10ea36b5fddecd62996885365404d3dc";
+    private final String CITY = "Colombo"; // You can make this dynamic later
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        ImageView ivMarketplace = findViewById(R.id.ivMarketplace);
-        ivMarketplace.setOnClickListener(new View.OnClickListener() {
+        // Weather TextViews
+        tvLocation = findViewById(R.id.tvLocation);
+        tvTemperature = findViewById(R.id.tvTemperature);
+        tvCondition = findViewById(R.id.tvCondition);
+
+        fetchWeather(); // Fetch and display weather data
+
+        // Navigation buttons (your existing code)
+        findViewById(R.id.ivMarketplace).setOnClickListener(v -> startActivity(new Intent(this, MarketplaceActivity.class)));
+        findViewById(R.id.ivVideoTutorials).setOnClickListener(v -> startActivity(new Intent(this, VideoTutorialsActivity.class)));
+        findViewById(R.id.ivCommunity).setOnClickListener(v -> startActivity(new Intent(this, CommunityActivity.class)));
+        findViewById(R.id.ivDiseaseAlert).setOnClickListener(v -> startActivity(new Intent(this, DiseaseAlertActivity.class)));
+        findViewById(R.id.ivExpertAdvice).setOnClickListener(v -> startActivity(new Intent(this, ExpertAdviceActivity.class)));
+        findViewById(R.id.ivFarmCalendar).setOnClickListener(v -> startActivity(new Intent(this, FarmCalendarActivity.class)));
+        findViewById(R.id.ivFinancialHelp).setOnClickListener(v -> startActivity(new Intent(this, FinancialHelpActivity.class)));
+        findViewById(R.id.ivFindWorkers).setOnClickListener(v -> startActivity(new Intent(this, FindWorkersActivity.class)));
+        findViewById(R.id.ivPesticides).setOnClickListener(v -> startActivity(new Intent(this, PesticidesActivity.class)));
+        findViewById(R.id.ivFeedback).setOnClickListener(v -> startActivity(new Intent(this, FeedbackActivity.class)));
+        findViewById(R.id.ivshopping).setOnClickListener(v -> startActivity(new Intent(this, MarketplaceActivity.class)));
+        findViewById(R.id.ivChat).setOnClickListener(v -> startActivity(new Intent(this, CommunityActivity.class)));
+        findViewById(R.id.ivLearn).setOnClickListener(v -> startActivity(new Intent(this, VideoTutorialsActivity.class)));
+        findViewById(R.id.ivProfile).setOnClickListener(v -> startActivity(new Intent(this, ProfileActivity.class)));
+    }
+
+    private void fetchWeather() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.openweathermap.org/data/2.5/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        WeatherApi weatherApi = retrofit.create(WeatherApi.class);
+        Call<WeatherResponse> call = weatherApi.getWeather(CITY, API_KEY, "metric");
+
+        call.enqueue(new Callback<WeatherResponse>() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, MarketplaceActivity.class);
-                startActivity(intent);
+            public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    WeatherResponse weather = response.body();
+                    tvLocation.setText(weather.name);
+                    tvTemperature.setText(weather.main.temp + "°C");
+                    tvCondition.setText(weather.weather.get(0).description);
+                } else {
+                    tvCondition.setText("Weather data unavailable");
+                }
             }
-        });
 
-        //navigate to VideoTutorialsActivity
-        ImageView ivVideoTutorials = findViewById(R.id.ivVideoTutorials);
-        ivVideoTutorials.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, VideoTutorialsActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        //navigate to CommunityActivity
-        ImageView ivCommunity = findViewById(R.id.ivCommunity);
-        ivCommunity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, CommunityActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        //navigate to DiseaseAlertActivity
-        ImageView ivDiseaseAlert = findViewById(R.id.ivDiseaseAlert);
-        ivDiseaseAlert.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, DiseaseAlertActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        //navigate to ExpertAdviceActivity
-        ImageView ivExpertAdvice = findViewById(R.id.ivExpertAdvice);
-        ivExpertAdvice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, ExpertAdviceActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        //navigate to FarmCalendarActivity
-        ImageView ivFarmCalendar = findViewById(R.id.ivFarmCalendar);
-        ivFarmCalendar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, FarmCalendarActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        //navigate to FinancialHelpActivity
-        ImageView ivFinancialHelp = findViewById(R.id.ivFinancialHelp);
-        ivFinancialHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, FinancialHelpActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        //navigate to FindWorkersActivity
-        ImageView ivFindWorkers = findViewById(R.id.ivFindWorkers);
-        ivFindWorkers.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, FindWorkersActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        //navigate to PesticidesActivity
-        ImageView ivPesticides = findViewById(R.id.ivPesticides);
-        ivPesticides.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, PesticidesActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        //navigate to FeedbackActivity
-        ImageView ivFeedback = findViewById(R.id.ivFeedback);
-        ivFeedback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, FeedbackActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        //#######################################
-        // ########## Navigation Panel ##########
-        // ######################################
-
-        //navigate to MarketplaceActivity
-        ImageView ivshopping = findViewById(R.id.ivshopping);
-        ivshopping.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, MarketplaceActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        //navigate to CommunityActivity
-        ImageView ivChat = findViewById(R.id.ivChat);
-        ivChat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, CommunityActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        //navigate to VideoTutorialsActivity
-        ImageView ivLearn = findViewById(R.id.ivLearn);
-        ivLearn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, VideoTutorialsActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        //navigate to ProfileActivity
-        ImageView ivProfile = findViewById(R.id.ivProfile);
-        ivProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        //navigate to NotificationActivity
-        ImageView ivProfile = findViewById(R.id.ivProfile);
-        ivProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
-                startActivity(intent);
+            public void onFailure(Call<WeatherResponse> call, Throwable t) {
+                tvCondition.setText("Error loading weather");
             }
         });
     }
-    }
+}

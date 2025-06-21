@@ -33,7 +33,7 @@
                 android:text="Govi Saviya Marketplace"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                android:textColor="#2E7D32" />
+                android:textColor="#524345" />
 
             <ImageView
                 android:id="@+id/btnNotifications"
@@ -252,7 +252,7 @@
                 <ImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:src="@drawable/ic_equipment"
+                    android:src="@drawable/ic_equipmentv"
                     android:layout_marginBottom="8dp" />
 
                 <TextView

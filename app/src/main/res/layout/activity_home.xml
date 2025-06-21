@@ -7,6 +7,8 @@
     android:background="@drawable/home"
     android:fillViewport="true">
 
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -148,7 +150,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="140dp"
             android:background="@color/white"
             android:elevation="8dp"
             android:gravity="center"
@@ -157,28 +159,33 @@
             android:paddingBottom="12dp">
 
             <ImageView
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:padding="15dp"
                 android:src="@drawable/ic_home" />
 
             <ImageView
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:padding="15dp"
                 android:src="@drawable/ic_shopping_cart" />
 
             <ImageView
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:padding="15dp"
                 android:src="@drawable/ic_chat" />
 
             <ImageView
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:padding="15dp"
                 android:src="@drawable/ic_learn" />
 
             <ImageView
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:padding="15dp"
                 android:src="@drawable/ic_user" />
 
         </LinearLayout>

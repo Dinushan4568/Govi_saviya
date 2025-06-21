@@ -7,7 +7,7 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="Govi Saviya"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GoviSaviya"
@@ -28,6 +28,14 @@
         <activity android:name=".HomeActivity" android:exported="false" />
         <activity android:name=".OtpActivity" android:exported="false" />
         <activity android:name=".MarketplaceActivity" android:exported="false" />
+        <activity android:name=".VideoTutorialsActivity" android:exported="false" />
+        <activity android:name=".ExpertAdviceActivity" android:exported="false" />
+        <activity android:name=".CommunityActivity" android:exported="false" />
+        <activity android:name=".FindWorkersActivity" android:exported="false" />
+        <activity android:name=".FinancialHelpActivity" android:exported="false" />
+        <activity android:name=".PesticidesActivity" android:exported="false" />
+        <activity android:name=".DiseaseAlertActivity" android:exported="false" />
+        <activity android:name=".FarmCalendarActivity" android:exported="false" />
 
         <meta-data
             android:name="preloaded_fonts"

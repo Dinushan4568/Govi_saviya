@@ -18,6 +18,13 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        ImageView ivMarketplace = findViewById(R.id.ivMarketplace);
+        ivMarketplace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, MarketplaceActivity.class);
+                startActivity(intent);
+            }
+        });
     }
     }
-

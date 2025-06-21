@@ -106,5 +106,69 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        //navigate to FeedbackActivity
+        ImageView ivFeedback = findViewById(R.id.ivFeedback);
+        ivFeedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, FeedbackActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //#######################################
+        // ########## Navigation Panel ##########
+        // ######################################
+
+        //navigate to MarketplaceActivity
+        ImageView ivshopping = findViewById(R.id.ivshopping);
+        ivshopping.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, MarketplaceActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //navigate to CommunityActivity
+        ImageView ivChat = findViewById(R.id.ivChat);
+        ivChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, CommunityActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //navigate to VideoTutorialsActivity
+        ImageView ivLearn = findViewById(R.id.ivLearn);
+        ivLearn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, VideoTutorialsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //navigate to ProfileActivity
+        ImageView ivProfile = findViewById(R.id.ivProfile);
+        ivProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //navigate to NotificationActivity
+        ImageView ivProfile = findViewById(R.id.ivProfile);
+        ivProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
     }
     }

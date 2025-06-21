@@ -6,9 +6,9 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/icon"
         android:label="Govi Saviya"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.GoviSaviya"
         tools:targetApi="31">
@@ -36,6 +36,9 @@
         <activity android:name=".PesticidesActivity" android:exported="false" />
         <activity android:name=".DiseaseAlertActivity" android:exported="false" />
         <activity android:name=".FarmCalendarActivity" android:exported="false" />
+        <activity android:name=".FeedbackActivity" android:exported="false" />
+        <activity android:name=".ProfileActivity" android:exported="false" />
+        <activity android:name=".NotificationActivity" android:exported="false" />
 
         <meta-data
             android:name="preloaded_fonts"

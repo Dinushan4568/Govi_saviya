@@ -45,19 +45,21 @@
     <LinearLayout
         android:id="@+id/buttonsLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:layout_below="@id/searchBarLayout"
         android:orientation="horizontal"
-        android:padding="8dp"
         android:gravity="center">
 
         <Button
             android:id="@+id/buttonLiveLocation"
-            android:layout_width="0dp"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="2dp"
             android:layout_height="wrap_content"
+            android:layout_margin="4dp"
             android:layout_weight="1"
-            android:text="Live Location"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:textSize="10sp"
+            android:background="@drawable/action_button_background"
+            android:text="Live location" />
 
         <Button
             android:id="@+id/buttonDisease"
@@ -65,7 +67,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Disease"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:textSize="10sp"
+            style="?android:attr/borderlessButtonStyle"
+            android:background="@drawable/action_button_background"
+            android:layout_margin="4dp"/>
 
         <Button
             android:id="@+id/buttonFoodShops"
@@ -73,16 +78,56 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Food Shops"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:textSize="10sp"
+            style="?android:attr/borderlessButtonStyle"
+            android:background="@drawable/action_button_background"
+            android:layout_margin="4dp"/>
 
         <Button
             android:id="@+id/buttonPesticideShops"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="4dp"
             android:layout_weight="1"
-            android:text="Pesticides"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:background="@drawable/action_button_background"
+            android:textSize="10sp"
+            android:text="Pesticides" />
     </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/locationListPopup"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:layout_marginEnd="215dp"
+        android:visibility="gone"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/popupTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/blue_primary"
+                android:padding="8dp"
+                android:text="Locations"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+
+            <ListView
+                android:id="@+id/locationListView"
+                android:layout_width="match_parent"
+                android:layout_height="150dp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
     <LinearLayout
         android:id="@+id/bottomSheetLayout"

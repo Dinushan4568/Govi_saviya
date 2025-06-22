@@ -14,8 +14,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
@@ -50,6 +53,13 @@ public class DiseaseAlertActivity extends FragmentActivity implements OnMapReady
     private final List<Marker> allMarkers = new ArrayList<>();
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
+    private CardView locationListPopup;
+    private ListView locationListView;
+    private TextView popupTitle;
+    private List<MapLocation> filteredLocations = new ArrayList<>();
+    private String currentFilter = "";
+    private int currentLocationIndex = -1;
+
     // Sample data for agricultural shops and disease areas
     private final List<MapLocation> locations = new ArrayList<>();
 
@@ -73,12 +83,19 @@ public class DiseaseAlertActivity extends FragmentActivity implements OnMapReady
         locationWeather = findViewById(R.id.locationWeather);
         locationKeyFeatures = findViewById(R.id.locationKeyFeatures);
 
+        locationListPopup = findViewById(R.id.locationListPopup);
+        locationListView = findViewById(R.id.locationListView);
+        popupTitle = findViewById(R.id.popupTitle);
+
         setupSearchFunctionality();
 
-        buttonLiveLocation.setOnClickListener(v -> moveToCurrentLocation());
-        buttonDisease.setOnClickListener(v -> showDiseaseLocations());
-        buttonFoodShops.setOnClickListener(v -> showFoodShops());
-        buttonPesticideShops.setOnClickListener(v -> showPesticideShops());
+        buttonLiveLocation.setOnClickListener(v -> {
+            locationListPopup.setVisibility(View.GONE);
+            moveToCurrentLocation();
+        });
+        buttonDisease.setOnClickListener(v -> handleFilterClick("Disease Alert"));
+        buttonFoodShops.setOnClickListener(v -> handleFilterClick("Agricultural Shop"));
+        buttonPesticideShops.setOnClickListener(v -> handleFilterClick("Pesticide Shop"));
 
 
         SupportMapFragment mapFragment = (SupportMapFragment)
@@ -140,38 +157,84 @@ public class DiseaseAlertActivity extends FragmentActivity implements OnMapReady
         }
     }
 
+    private void handleFilterClick(String filterType) {
+        bottomSheetLayout.setVisibility(View.GONE);
 
-    private void filterAndShowLocations(String type) {
-        clearMarkers();
-        for (MapLocation loc : locations) {
-            if (loc.type.equals(type)) {
-                Marker marker = mMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(loc.latitude, loc.longitude))
-                        .title(loc.name)
-                        .icon(BitmapDescriptorFactory.defaultMarker(loc.color)));
-                if (marker != null) {
-                    marker.setTag(loc);
-                    allMarkers.add(marker);
+        if (!currentFilter.equals(filterType)) {
+            currentFilter = filterType;
+            currentLocationIndex = -1;
+            filteredLocations.clear();
+            for (MapLocation loc : locations) {
+                if (loc.type.equals(filterType)) {
+                    filteredLocations.add(loc);
+                }
+            }
+            displayFilteredLocations();
+            updateLocationListPopup();
+
+        } else {
+            // Cycle through locations
+            if (!filteredLocations.isEmpty()) {
+                currentLocationIndex = (currentLocationIndex + 1) % filteredLocations.size();
+                MapLocation nextLocation = filteredLocations.get(currentLocationIndex);
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(nextLocation.latitude, nextLocation.longitude), 15));
+
+                // Find and show info window for the corresponding marker
+                for (Marker marker : allMarkers) {
+                    if (marker.getTag() != null && marker.getTag().equals(nextLocation)) {
+                        marker.showInfoWindow();
+                        showDetails(marker);
+                        break;
+                    }
                 }
             }
         }
-        if (!allMarkers.isEmpty()) {
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(allMarkers.get(0).getPosition(), 10));
+    }
+
+    private void displayFilteredLocations() {
+        clearMarkers();
+        for (MapLocation loc : filteredLocations) {
+            addMarker(loc);
+        }
+
+        if (!filteredLocations.isEmpty()) {
+            // Zoom to the first location in the list
+            MapLocation firstLocation = filteredLocations.get(0);
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(firstLocation.latitude, firstLocation.longitude), 12));
+        } else {
+            Toast.makeText(this, "No locations found for this filter.", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void showDiseaseLocations() {
-        filterAndShowLocations("Disease Alert");
-    }
+    private void updateLocationListPopup() {
+        if (filteredLocations.isEmpty()) {
+            locationListPopup.setVisibility(View.GONE);
+            return;
+        }
 
-    private void showFoodShops() {
-        filterAndShowLocations("Agricultural Shop");
-    }
+        popupTitle.setText(currentFilter);
+        List<String> locationNames = new ArrayList<>();
+        for (MapLocation loc : filteredLocations) {
+            locationNames.add(loc.name);
+        }
 
-    private void showPesticideShops() {
-        filterAndShowLocations("Pesticide Shop");
-    }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, locationNames);
+        locationListView.setAdapter(adapter);
 
+        locationListView.setOnItemClickListener((parent, view, position, id) -> {
+            currentLocationIndex = position;
+            MapLocation selectedLocation = filteredLocations.get(position);
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(selectedLocation.latitude, selectedLocation.longitude), 15));
+            for (Marker marker : allMarkers) {
+                if (marker.getTag() != null && marker.getTag().equals(selectedLocation)) {
+                    showDetails(marker);
+                    break;
+                }
+            }
+        });
+
+        locationListPopup.setVisibility(View.VISIBLE);
+    }
 
     private void showAllLocations() {
         clearMarkers();
@@ -183,6 +246,7 @@ public class DiseaseAlertActivity extends FragmentActivity implements OnMapReady
         } else if (!allMarkers.isEmpty()) {
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(allMarkers.get(0).getPosition(), 7));
         }
+        locationListPopup.setVisibility(View.GONE);
     }
 
     private void moveToCurrentLocation() {
@@ -190,6 +254,7 @@ public class DiseaseAlertActivity extends FragmentActivity implements OnMapReady
             LatLng currentLatLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15));
             Toast.makeText(this, "Showing your location", Toast.LENGTH_SHORT).show();
+            locationListPopup.setVisibility(View.GONE);
         } else {
             Toast.makeText(this, "Current location not available. Please enable location services.", Toast.LENGTH_SHORT).show();
             requestLocationPermission();
@@ -337,6 +402,16 @@ public class DiseaseAlertActivity extends FragmentActivity implements OnMapReady
             this.latitude = latitude;
             this.longitude = longitude;
             this.color = color;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (obj == null || getClass() != obj.getClass()) return false;
+            MapLocation that = (MapLocation) obj;
+            return Double.compare(that.latitude, latitude) == 0 &&
+                    Double.compare(that.longitude, longitude) == 0 &&
+                    name.equals(that.name);
         }
     }
 }

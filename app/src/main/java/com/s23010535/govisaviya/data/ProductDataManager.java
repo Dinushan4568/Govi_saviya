@@ -1,27 +1,70 @@
 package com.s23010535.govisaviya.data;
 
+import android.content.Context;
+import android.util.Log;
+
+import com.s23010535.govisaviya.database.DatabaseManager;
 import com.s23010535.govisaviya.models.Product;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * ProductDataManager - Manages product data with database integration
+ * This class provides a bridge between the UI and the database system
+ */
 public class ProductDataManager {
     
     private static ProductDataManager instance;
+    private DatabaseManager databaseManager;
     private List<Product> allProducts;
     private List<Product> featuredProducts;
+    private boolean isInitialized = false;
 
-    private ProductDataManager() {
-        initializeSampleData();
+    private ProductDataManager(Context context) {
+        this.databaseManager = DatabaseManager.getInstance(context);
+        initializeData();
     }
 
-    public static ProductDataManager getInstance() {
+    public static ProductDataManager getInstance(Context context) {
         if (instance == null) {
-            instance = new ProductDataManager();
+            instance = new ProductDataManager(context);
         }
         return instance;
     }
 
+    /**
+     * Initialize data from database or fallback to sample data
+     */
+    private void initializeData() {
+        try {
+            // Try to get data from database first
+            List<Product> dbProducts = databaseManager.getAllProducts();
+            if (dbProducts != null && !dbProducts.isEmpty()) {
+                allProducts = dbProducts;
+                featuredProducts = databaseManager.getFeaturedProducts();
+                if (featuredProducts == null) {
+                    featuredProducts = new ArrayList<>();
+                }
+                isInitialized = true;
+                Log.d("ProductDataManager", "Data loaded from database: " + allProducts.size() + " products");
+            } else {
+                // Fallback to sample data
+                initializeSampleData();
+                // Populate database with sample data
+                databaseManager.initializeSampleData();
+                Log.d("ProductDataManager", "Sample data initialized and saved to database");
+            }
+        } catch (Exception e) {
+            Log.e("ProductDataManager", "Error initializing data: " + e.getMessage());
+            // Fallback to sample data
+            initializeSampleData();
+        }
+    }
+
+    /**
+     * Initialize sample data (fallback method)
+     */
     private void initializeSampleData() {
         allProducts = new ArrayList<>();
         featuredProducts = new ArrayList<>();
@@ -133,20 +176,58 @@ public class ProductDataManager {
         tools.setDeliveryCost(100.0);
         tools.setTags("tools, garden, set, essential");
         allProducts.add(tools);
+
+        isInitialized = true;
+    }
+
+    /**
+     * Refresh data from database
+     */
+    public void refreshData() {
+        try {
+            List<Product> dbProducts = databaseManager.getAllProducts();
+            if (dbProducts != null) {
+                allProducts = dbProducts;
+                featuredProducts = databaseManager.getFeaturedProducts();
+                if (featuredProducts == null) {
+                    featuredProducts = new ArrayList<>();
+                }
+                Log.d("ProductDataManager", "Data refreshed from database: " + allProducts.size() + " products");
+            }
+        } catch (Exception e) {
+            Log.e("ProductDataManager", "Error refreshing data: " + e.getMessage());
+        }
     }
 
     // Get all products
     public List<Product> getAllProducts() {
+        if (!isInitialized) {
+            refreshData();
+        }
         return new ArrayList<>(allProducts);
     }
 
     // Get featured products
     public List<Product> getFeaturedProducts() {
+        if (!isInitialized) {
+            refreshData();
+        }
         return new ArrayList<>(featuredProducts);
     }
 
     // Get products by category
     public List<Product> getProductsByCategory(String category) {
+        try {
+            // Try database first
+            List<Product> categoryProducts = databaseManager.getProductsByCategory(category);
+            if (categoryProducts != null) {
+                return categoryProducts;
+            }
+        } catch (Exception e) {
+            Log.e("ProductDataManager", "Error getting products by category from database: " + e.getMessage());
+        }
+
+        // Fallback to local filtering
         List<Product> categoryProducts = new ArrayList<>();
         for (Product product : allProducts) {
             if (product.getCategory().equalsIgnoreCase(category)) {
@@ -158,6 +239,17 @@ public class ProductDataManager {
 
     // Search products
     public List<Product> searchProducts(String query) {
+        try {
+            // Try database first
+            List<Product> searchResults = databaseManager.searchProducts(query);
+            if (searchResults != null) {
+                return searchResults;
+            }
+        } catch (Exception e) {
+            Log.e("ProductDataManager", "Error searching products in database: " + e.getMessage());
+        }
+
+        // Fallback to local search
         List<Product> searchResults = new ArrayList<>();
         String lowerQuery = query.toLowerCase();
         
@@ -174,6 +266,17 @@ public class ProductDataManager {
 
     // Get product by ID
     public Product getProductById(int id) {
+        try {
+            // Try database first
+            Product product = databaseManager.getProduct(id);
+            if (product != null) {
+                return product;
+            }
+        } catch (Exception e) {
+            Log.e("ProductDataManager", "Error getting product by ID from database: " + e.getMessage());
+        }
+
+        // Fallback to local search
         for (Product product : allProducts) {
             if (product.getId() == id) {
                 return product;
@@ -182,29 +285,105 @@ public class ProductDataManager {
         return null;
     }
 
-    // Add new product (for future database integration)
-    public void addProduct(Product product) {
-        product.setId(allProducts.size() + 1); // Simple ID generation
+    // Add new product (with database integration)
+    public boolean addProduct(Product product) {
+        try {
+            // Add to database
+            long productId = databaseManager.addProduct(product);
+            if (productId > 0) {
+                product.setId((int) productId);
+                
+                // Add to local lists
+                allProducts.add(product);
+                if (product.isFeatured()) {
+                    featuredProducts.add(product);
+                }
+                
+                Log.d("ProductDataManager", "Product added successfully: " + product.getName());
+                return true;
+            }
+        } catch (Exception e) {
+            Log.e("ProductDataManager", "Error adding product to database: " + e.getMessage());
+        }
+
+        // Fallback to local only
+        product.setId(allProducts.size() + 1);
         allProducts.add(product);
         if (product.isFeatured()) {
             featuredProducts.add(product);
         }
+        return false;
     }
 
-    // Update product (for future database integration)
-    public void updateProduct(Product updatedProduct) {
+    // Update product (with database integration)
+    public boolean updateProduct(Product updatedProduct) {
+        try {
+            // Update in database
+            boolean success = databaseManager.updateProduct(updatedProduct);
+            if (success) {
+                // Update local lists
+                for (int i = 0; i < allProducts.size(); i++) {
+                    if (allProducts.get(i).getId() == updatedProduct.getId()) {
+                        allProducts.set(i, updatedProduct);
+                        break;
+                    }
+                }
+                
+                // Update featured products list
+                if (updatedProduct.isFeatured()) {
+                    boolean found = false;
+                    for (int i = 0; i < featuredProducts.size(); i++) {
+                        if (featuredProducts.get(i).getId() == updatedProduct.getId()) {
+                            featuredProducts.set(i, updatedProduct);
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        featuredProducts.add(updatedProduct);
+                    }
+                } else {
+                    featuredProducts.removeIf(product -> product.getId() == updatedProduct.getId());
+                }
+                
+                Log.d("ProductDataManager", "Product updated successfully: " + updatedProduct.getName());
+                return true;
+            }
+        } catch (Exception e) {
+            Log.e("ProductDataManager", "Error updating product in database: " + e.getMessage());
+        }
+
+        // Fallback to local only
         for (int i = 0; i < allProducts.size(); i++) {
             if (allProducts.get(i).getId() == updatedProduct.getId()) {
                 allProducts.set(i, updatedProduct);
                 break;
             }
         }
+        return false;
     }
 
-    // Delete product (for future database integration)
-    public void deleteProduct(int productId) {
+    // Delete product (with database integration)
+    public boolean deleteProduct(int productId) {
+        try {
+            // Delete from database
+            boolean success = databaseManager.deleteProduct(productId);
+            if (success) {
+                // Remove from local lists
+                allProducts.removeIf(product -> product.getId() == productId);
+                featuredProducts.removeIf(product -> product.getId() == productId);
+                
+                Log.d("ProductDataManager", "Product deleted successfully: " + productId);
+                return true;
+            }
+        } catch (Exception e) {
+            Log.e("ProductDataManager", "Error deleting product from database: " + e.getMessage());
+        }
+
+        // Fallback to local only
         allProducts.removeIf(product -> product.getId() == productId);
         featuredProducts.removeIf(product -> product.getId() == productId);
+        return false;
     }
 
     // Get products by price range
@@ -228,5 +407,19 @@ public class ProductDataManager {
             }
         }
         return locationFilteredProducts;
+    }
+
+    /**
+     * Get database manager instance
+     */
+    public DatabaseManager getDatabaseManager() {
+        return databaseManager;
+    }
+
+    /**
+     * Check if data is initialized
+     */
+    public boolean isInitialized() {
+        return isInitialized;
     }
 } 

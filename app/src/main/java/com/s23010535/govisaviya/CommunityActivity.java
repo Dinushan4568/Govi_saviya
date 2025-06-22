@@ -1,19 +1,15 @@
 package com.s23010535.govisaviya;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.text.SimpleDateFormat;
@@ -23,9 +19,9 @@ public class CommunityActivity extends Activity {
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final int CAMERA_REQUEST = 2;
 
-    private LinearLayout rootLayout;
     private EditText messageEditText;
-    private Button sendButton, imageButton, cameraButton;
+    private ImageButton sendButton, backButton, notificationButton;
+    private Button whatsappButton, facebookButton, imageButton, cameraButton, quickPostButton;
     private RecyclerView messagesRecyclerView;
     private ImageView selectedImageView;
     private Uri selectedImageUri;
@@ -35,232 +31,30 @@ public class CommunityActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        createLayout();
+        setContentView(R.layout.activity_community);
+        
+        initializeViews();
         initializeData();
         setupClickListeners();
         addSampleMessages();
     }
 
-    private void createLayout() {
-        rootLayout = new LinearLayout(this);
-        rootLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT));
-        rootLayout.setOrientation(LinearLayout.VERTICAL);
-        rootLayout.setBackgroundColor(Color.parseColor("#F8F9FA"));
-
-        createHeader();
-        createStatsSection();
-        createMessagesSection();
-        createInputSection();
-
-        setContentView(rootLayout);
-    }
-
-    private void createHeader() {
-        LinearLayout headerContainer = new LinearLayout(this);
-        headerContainer.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        headerContainer.setOrientation(LinearLayout.VERTICAL);
-        headerContainer.setBackground(createGradientBackground("#4CAF50", "#45A049"));
-        headerContainer.setElevation(8);
-
-        LinearLayout mainHeader = new LinearLayout(this);
-        mainHeader.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        mainHeader.setOrientation(LinearLayout.HORIZONTAL);
-        mainHeader.setPadding(20, 16, 20, 16);
-        mainHeader.setGravity(Gravity.CENTER_VERTICAL);
-
-        ImageButton backButton = new ImageButton(this);
-        backButton.setLayoutParams(new LinearLayout.LayoutParams(48, 48));
-        backButton.setImageResource(android.R.drawable.ic_menu_revert);
-        backButton.setBackground(createRoundedBackground(Color.TRANSPARENT, 24));
-        backButton.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        backButton.setOnClickListener(v -> finish());
-
-        TextView titleText = new TextView(this);
-        LinearLayout.LayoutParams titleParams = new LinearLayout.LayoutParams(
-                0, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
-        titleParams.setMargins(16, 0, 0, 0);
-        titleText.setLayoutParams(titleParams);
-        titleText.setText("🌾 Govi Saviya Community");
-        titleText.setTextSize(20);
-        titleText.setTypeface(null, Typeface.BOLD);
-        titleText.setTextColor(Color.WHITE);
-
-        LinearLayout onlineIndicator = new LinearLayout(this);
-        onlineIndicator.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        onlineIndicator.setOrientation(LinearLayout.HORIZONTAL);
-        onlineIndicator.setBackground(createRoundedBackground(Color.parseColor("#66BB6A"), 16));
-        onlineIndicator.setPadding(12, 6, 12, 6);
-        onlineIndicator.setGravity(Gravity.CENTER_VERTICAL);
-
-        View onlineDot = new View(this);
-        onlineDot.setLayoutParams(new LinearLayout.LayoutParams(8, 8));
-        onlineDot.setBackground(createRoundedBackground(Color.WHITE, 4));
-
-        TextView onlineCountText = new TextView(this);
-        onlineCountText.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        onlineCountText.setText(" 47 online");
-        onlineCountText.setTextSize(12);
-        onlineCountText.setTextColor(Color.WHITE);
-        onlineCountText.setTypeface(null, Typeface.BOLD);
-
-        onlineIndicator.addView(onlineDot);
-        onlineIndicator.addView(onlineCountText);
-
-        mainHeader.addView(backButton);
-        mainHeader.addView(titleText);
-        mainHeader.addView(onlineIndicator);
-
-        headerContainer.addView(mainHeader);
-        rootLayout.addView(headerContainer);
-    }
-
-    private void createStatsSection() {
-        LinearLayout statsContainer = new LinearLayout(this);
-        statsContainer.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        statsContainer.setOrientation(LinearLayout.HORIZONTAL);
-        statsContainer.setBackgroundColor(Color.WHITE);
-        statsContainer.setElevation(4);
-        statsContainer.setPadding(20, 16, 20, 16);
-
-        LinearLayout usersStat = createStatItem("👥", "Total Users", "1,247", "#4CAF50");
-        LinearLayout discussionsStat = createStatItem("💬", "Active Discussions", "89", "#2196F3");
-        LinearLayout postsStat = createStatItem("📝", "Today's Posts", "156", "#FF9800");
-
-        statsContainer.addView(usersStat);
-        statsContainer.addView(discussionsStat);
-        statsContainer.addView(postsStat);
-        rootLayout.addView(statsContainer);
-    }
-
-    private LinearLayout createStatItem(String icon, String label, String value, String color) {
-        LinearLayout container = new LinearLayout(this);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                0, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
-        container.setLayoutParams(params);
-        container.setOrientation(LinearLayout.VERTICAL);
-        container.setGravity(Gravity.CENTER);
-
-        TextView iconText = new TextView(this);
-        iconText.setText(icon);
-        iconText.setTextSize(24);
-        iconText.setGravity(Gravity.CENTER);
-
-        TextView valueText = new TextView(this);
-        valueText.setText(value);
-        valueText.setTextSize(18);
-        valueText.setTypeface(null, Typeface.BOLD);
-        valueText.setTextColor(Color.parseColor(color));
-        valueText.setGravity(Gravity.CENTER);
-
-        TextView labelText = new TextView(this);
-        labelText.setText(label);
-        labelText.setTextSize(12);
-        labelText.setTextColor(Color.parseColor("#666666"));
-        labelText.setGravity(Gravity.CENTER);
-
-        container.addView(iconText);
-        container.addView(valueText);
-        container.addView(labelText);
-        return container;
-    }
-
-    private void createMessagesSection() {
-        LinearLayout messagesContainer = new LinearLayout(this);
-        messagesContainer.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                0, 1));
-        messagesContainer.setOrientation(LinearLayout.VERTICAL);
-        messagesContainer.setBackgroundColor(Color.parseColor("#F8F9FA"));
-
-        LinearLayout sectionHeader = new LinearLayout(this);
-        sectionHeader.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        sectionHeader.setOrientation(LinearLayout.HORIZONTAL);
-        sectionHeader.setBackgroundColor(Color.WHITE);
-        sectionHeader.setPadding(20, 12, 20, 12);
-        sectionHeader.setElevation(2);
-
-        TextView sectionTitle = new TextView(this);
-        sectionTitle.setText("💬 Community Discussions");
-        sectionTitle.setTextSize(16);
-        sectionTitle.setTypeface(null, Typeface.BOLD);
-        sectionTitle.setTextColor(Color.parseColor("#333333"));
-
-        sectionHeader.addView(sectionTitle);
-
-        messagesRecyclerView = new RecyclerView(this);
-        messagesRecyclerView.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT));
+    private void initializeViews() {
+        messageEditText = findViewById(R.id.messageEditText);
+        sendButton = findViewById(R.id.sendButton);
+        backButton = findViewById(R.id.backButton);
+        notificationButton = findViewById(R.id.notificationButton);
+        whatsappButton = findViewById(R.id.whatsappButton);
+        facebookButton = findViewById(R.id.facebookButton);
+        imageButton = findViewById(R.id.imageButton);
+        cameraButton = findViewById(R.id.cameraButton);
+        quickPostButton = findViewById(R.id.quickPostButton);
+        selectedImageView = findViewById(R.id.selectedImageView);
+        messagesRecyclerView = findViewById(R.id.messagesRecyclerView);
+        
+        // Initialize RecyclerView
         messagesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        messagesRecyclerView.setPadding(8, 8, 8, 8);
-
-        messagesContainer.addView(sectionHeader);
-        messagesContainer.addView(messagesRecyclerView);
-        rootLayout.addView(messagesContainer);
-    }
-
-    private void createInputSection() {
-        LinearLayout inputContainer = new LinearLayout(this);
-        inputContainer.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        inputContainer.setOrientation(LinearLayout.VERTICAL);
-        inputContainer.setBackgroundColor(Color.WHITE);
-        inputContainer.setElevation(8);
-        inputContainer.setPadding(16, 16, 16, 16);
-
-        selectedImageView = new ImageView(this);
-        selectedImageView.setLayoutParams(new LinearLayout.LayoutParams(120, 120));
-        selectedImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        selectedImageView.setBackground(createRoundedBackground(Color.parseColor("#E0E0E0"), 8));
-        selectedImageView.setVisibility(View.GONE);
-        selectedImageView.setPadding(8, 8, 8, 8);
-
-        LinearLayout inputRow = new LinearLayout(this);
-        inputRow.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        inputRow.setOrientation(LinearLayout.HORIZONTAL);
-        inputRow.setGravity(Gravity.CENTER_VERTICAL);
-
-        messageEditText = new EditText(this);
-        LinearLayout.LayoutParams editParams = new LinearLayout.LayoutParams(
-                0, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
-        editParams.setMargins(0, 0, 12, 0);
-        messageEditText.setLayoutParams(editParams);
-        messageEditText.setHint("Share your farming experience...");
-        messageEditText.setPadding(16, 12, 16, 12);
-        messageEditText.setBackground(createRoundedBackground(Color.parseColor("#F5F5F5"), 24));
-        messageEditText.setTextSize(16);
-        messageEditText.setMaxLines(3);
-
-        sendButton = new Button(this);
-        sendButton.setLayoutParams(new LinearLayout.LayoutParams(48, 48));
-        sendButton.setText("📤");
-        sendButton.setTextSize(18);
-        sendButton.setBackground(createRoundedBackground(Color.parseColor("#4CAF50"), 24));
-        sendButton.setTextColor(Color.WHITE);
-
-        inputRow.addView(messageEditText);
-        inputRow.addView(sendButton);
-
-        inputContainer.addView(selectedImageView);
-        inputContainer.addView(inputRow);
-        rootLayout.addView(inputContainer);
+        messagesRecyclerView.setBackgroundColor(getResources().getColor(android.R.color.transparent));
     }
 
     private void initializeData() {
@@ -271,12 +65,69 @@ public class CommunityActivity extends Activity {
 
     private void setupClickListeners() {
         sendButton.setOnClickListener(v -> sendMessage());
+        backButton.setOnClickListener(v -> finish());
+        notificationButton.setOnClickListener(v -> showNotifications());
+        whatsappButton.setOnClickListener(v -> openWhatsApp());
+        facebookButton.setOnClickListener(v -> openFacebook());
+        imageButton.setOnClickListener(v -> selectImage());
+        cameraButton.setOnClickListener(v -> capturePhoto());
+        quickPostButton.setOnClickListener(v -> showQuickPostDialog());
+    }
+
+    private void showNotifications() {
+        Toast.makeText(this, "Notifications", Toast.LENGTH_SHORT).show();
+    }
+
+    private void openWhatsApp() {
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("https://wa.me/your-community-group"));
+            startActivity(intent);
+        } catch (Exception e) {
+            Toast.makeText(this, "WhatsApp not available", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void openFacebook() {
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("https://facebook.com/your-community-page"));
+            startActivity(intent);
+        } catch (Exception e) {
+            Toast.makeText(this, "Facebook not available", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void selectImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Image"), PICK_IMAGE_REQUEST);
+    }
+
+    private void capturePhoto() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, CAMERA_REQUEST);
+    }
+
+    private void showQuickPostDialog() {
+        String[] options = {"💡 Share Problem", "🌱 Share Experience", "💰 Sell/Buy"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Quick Post");
+        builder.setItems(options, (dialog, which) -> {
+            String selectedOption = options[which];
+            messageEditText.setText(selectedOption + ": ");
+            messageEditText.requestFocus();
+        });
+        builder.show();
     }
 
     private void addSampleMessages() {
         addMessage("Farmer John", "Just harvested my paddy field today! The yield looks promising.", "14:30", false, 12, 3);
         addMessage("Maria Silva", "Having trouble with pest control in my vegetable garden.", "14:25", false, 8, 5);
         addMessage("Expert Advisor", "🌾 Tip: Always check soil moisture before irrigation.", "14:15", false, 25, 7);
+        addMessage("Local Farmer", "Best time to plant tomatoes in this season?", "14:10", false, 15, 8);
+        addMessage("Community Admin", "Welcome to our farming community! Share your experiences.", "14:05", false, 30, 12);
     }
 
     private void sendMessage() {
@@ -302,23 +153,19 @@ public class CommunityActivity extends Activity {
         return new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
     }
 
-    private GradientDrawable createGradientBackground(String startColor, String endColor) {
-        GradientDrawable gradient = new GradientDrawable(
-                GradientDrawable.Orientation.TOP_BOTTOM,
-                new int[]{Color.parseColor(startColor), Color.parseColor(endColor)}
-        );
-        return gradient;
-    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-    private GradientDrawable createRoundedBackground(int color, float radius) {
-        GradientDrawable drawable = new GradientDrawable();
-        drawable.setColor(color);
-        drawable.setCornerRadius(radius);
-        return drawable;
-    }
-
-    private GradientDrawable createRoundedBackground(String color, float radius) {
-        return createRoundedBackground(Color.parseColor(color), radius);
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            selectedImageUri = data.getData();
+            selectedImageView.setImageURI(selectedImageUri);
+            selectedImageView.setVisibility(View.VISIBLE);
+        } else if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK && data != null) {
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            selectedImageView.setImageBitmap(photo);
+            selectedImageView.setVisibility(View.VISIBLE);
+        }
     }
 
     public static class CommunityMessage {
@@ -348,50 +195,8 @@ public class CommunityActivity extends Activity {
 
         @Override
         public MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            CardView cardView = new CardView(CommunityActivity.this);
-            cardView.setLayoutParams(new ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT));
-            cardView.setRadius(16);
-            cardView.setCardElevation(4);
-            cardView.setUseCompatPadding(true);
-            cardView.setCardBackgroundColor(Color.WHITE);
-
-            LinearLayout layout = new LinearLayout(CommunityActivity.this);
-            layout.setOrientation(LinearLayout.VERTICAL);
-            layout.setPadding(20, 20, 20, 20);
-
-            LinearLayout header = new LinearLayout(CommunityActivity.this);
-            header.setOrientation(LinearLayout.HORIZONTAL);
-            header.setGravity(Gravity.CENTER_VERTICAL);
-
-            TextView userName = new TextView(CommunityActivity.this);
-            userName.setTextSize(16);
-            userName.setTypeface(null, Typeface.BOLD);
-            userName.setTextColor(Color.parseColor("#333333"));
-
-            TextView timeText = new TextView(CommunityActivity.this);
-            timeText.setTextSize(12);
-            timeText.setTextColor(Color.parseColor("#666666"));
-
-            LinearLayout.LayoutParams nameParams = new LinearLayout.LayoutParams(
-                    0, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
-            userName.setLayoutParams(nameParams);
-
-            header.addView(userName);
-            header.addView(timeText);
-
-            TextView messageText = new TextView(CommunityActivity.this);
-            messageText.setTextSize(14);
-            messageText.setTextColor(Color.parseColor("#333333"));
-            messageText.setPadding(0, 8, 0, 0);
-
-            layout.addView(header);
-            layout.addView(messageText);
-
-            cardView.addView(layout);
-
-            return new MessageViewHolder(cardView, userName, timeText, messageText);
+            View view = getLayoutInflater().inflate(R.layout.item_community_message, parent, false);
+            return new MessageViewHolder(view);
         }
 
         @Override
@@ -401,6 +206,15 @@ public class CommunityActivity extends Activity {
             holder.userName.setText(message.userName);
             holder.timeText.setText(" • " + message.time);
             holder.messageText.setText(message.message);
+            
+            // Set different colors for different user types
+            if (message.userName.equals("Expert Advisor")) {
+                holder.userName.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
+            } else if (message.userName.equals("Community Admin")) {
+                holder.userName.setTextColor(getResources().getColor(android.R.color.holo_blue_dark));
+            } else if (message.userName.equals("You")) {
+                holder.userName.setTextColor(getResources().getColor(android.R.color.holo_orange_dark));
+            }
         }
 
         @Override
@@ -411,11 +225,11 @@ public class CommunityActivity extends Activity {
         class MessageViewHolder extends RecyclerView.ViewHolder {
             TextView userName, timeText, messageText;
 
-            MessageViewHolder(View itemView, TextView userName, TextView timeText, TextView messageText) {
+            MessageViewHolder(View itemView) {
                 super(itemView);
-                this.userName = userName;
-                this.timeText = timeText;
-                this.messageText = messageText;
+                userName = itemView.findViewById(R.id.userName);
+                timeText = itemView.findViewById(R.id.timeText);
+                messageText = itemView.findViewById(R.id.messageText);
             }
         }
     }

@@ -18,7 +18,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="🌾 ගොවි සභාව - Community"
+            android:text="🌾 Govi Saviya - Community"
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
@@ -27,7 +27,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="👥 Online: 247"
+            android:text="👥 Online: o"
             android:textSize="12sp"
             android:textColor="#E8F5E8"
             android:background="#66BB6A"
@@ -49,7 +49,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="සම්බන්ධ වන්න:"
+            android:text="Stay connected:"
             android:textSize="14sp"
             android:textColor="#666666"
             android:layout_gravity="center_vertical"
@@ -105,7 +105,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="සාමාජිකයන්"
+                android:text="Users"
                 android:textSize="12sp"
                 android:textColor="#666666" />
 
@@ -129,7 +129,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="අද පණිවිඩ"
+                android:text="Unread Messages"
                 android:textSize="12sp"
                 android:textColor="#666666" />
 
@@ -153,7 +153,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ප්‍rश्न"
+                android:text="Active Discussions"
                 android:textSize="12sp"
                 android:textColor="#666666" />
 
@@ -210,7 +210,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="පණිවිඩයක් ටයිප් කරන්න..."
+                android:hint="Enter your message..."
                 android:padding="12dp"
                 android:background="@drawable/edittext_background"
                 android:textSize="16sp"
@@ -242,7 +242,7 @@
                 android:id="@+id/imageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="36dp"
-                android:text="🖼️ පින්තූරය"
+                android:text="Select Image"
                 android:textSize="12sp"
                 android:background="#E1F5FE"
                 android:textColor="#0277BD"
@@ -253,7 +253,7 @@
                 android:id="@+id/cameraButton"
                 android:layout_width="wrap_content"
                 android:layout_height="36dp"
-                android:text="📸 කැමරාව"
+                android:text="Capture Photo"
                 android:textSize="12sp"
                 android:background="#FFF3E0"
                 android:textColor="#E65100"
@@ -272,7 +272,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="💡 ප්‍රශ්නය"
+                android:text="💡 Problems"
                 android:textSize="12sp"
                 android:textColor="#FF9800"
                 android:background="#FFF8E1"
@@ -283,7 +283,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="🌱 අත්දැකීම්"
+                android:text="🌱 Experience"
                 android:textSize="12sp"
                 android:textColor="#4CAF50"
                 android:background="#E8F5E8"
@@ -294,7 +294,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="💰 විකිණීම"
+                android:text="💰 Sell/Buy"
                 android:textSize="12sp"
                 android:textColor="#2196F3"
                 android:background="#E3F2FD"

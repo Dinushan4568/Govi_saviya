@@ -1,3 +1,4 @@
+// CommunityActivity.java – UI only (no sample messages, ready for database integration)
 package com.s23010535.govisaviya;
 
 import android.app.Activity;
@@ -7,13 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ScrollView;
+import android.widget.*;
 import androidx.cardview.widget.CardView;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,11 +19,7 @@ public class CommunityActivity extends Activity {
     private static final int CAMERA_REQUEST = 2;
 
     private EditText messageEditText;
-    private Button sendButton;
-    private Button imageButton;
-    private Button cameraButton;
-    private Button whatsappButton;
-    private Button facebookButton;
+    private Button sendButton, imageButton, cameraButton, whatsappButton, facebookButton;
     private LinearLayout messagesContainer;
     private ScrollView messagesScrollView;
     private ImageView selectedImageView;
@@ -41,7 +32,6 @@ public class CommunityActivity extends Activity {
 
         initializeViews();
         setupClickListeners();
-        loadSampleMessages();
     }
 
     private void initializeViews() {
@@ -57,238 +47,142 @@ public class CommunityActivity extends Activity {
     }
 
     private void setupClickListeners() {
-        sendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendMessage();
-            }
-        });
-
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openImagePicker();
-            }
-        });
-
-        cameraButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openCamera();
-            }
-        });
-
-        whatsappButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openWhatsApp();
-            }
-        });
-
-        facebookButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openFacebook();
-            }
-        });
+        sendButton.setOnClickListener(v -> sendMessage());
+        imageButton.setOnClickListener(v -> openImagePicker());
+        cameraButton.setOnClickListener(v -> openCamera());
+        whatsappButton.setOnClickListener(v -> openWhatsApp());
+        facebookButton.setOnClickListener(v -> openFacebook());
     }
 
     private void sendMessage() {
         String messageText = messageEditText.getText().toString().trim();
-
         if (messageText.isEmpty() && selectedImageUri == null) {
-            Toast.makeText(this, "කරුණාකර පණිවිඩයක් ටයිප් කරන්න හෝ පින්තූරයක් තෝරන්න", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter a message or select an image", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        // Create message view
-        addMessageToChat("ඔබ", messageText, getCurrentTime(), selectedImageUri != null);
-
-        // Clear input
+        addMessageToChat("You", messageText, getCurrentTime(), selectedImageUri != null);
         messageEditText.setText("");
         selectedImageView.setVisibility(View.GONE);
         selectedImageUri = null;
-
-        // Scroll to bottom
-        messagesScrollView.post(new Runnable() {
-            @Override
-            public void run() {
-                messagesScrollView.fullScroll(View.FOCUS_DOWN);
-            }
-        });
-
-        Toast.makeText(this, "පණිවිඩය යවන ලදී", Toast.LENGTH_SHORT).show();
+        messagesScrollView.post(() -> messagesScrollView.fullScroll(View.FOCUS_DOWN));
+        Toast.makeText(this, "Message sent", Toast.LENGTH_SHORT).show();
     }
 
     private void addMessageToChat(String userName, String message, String time, boolean hasImage) {
-        // Create message card
-        CardView messageCard = new CardView(this);
+        CardView card = new CardView(this);
+        card.setRadius(16);
+        card.setCardElevation(6);
+        card.setUseCompatPadding(true);
+        card.setCardBackgroundColor(getResources().getColor(android.R.color.white));
         LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         cardParams.setMargins(16, 8, 16, 8);
-        messageCard.setLayoutParams(cardParams);
-        messageCard.setRadius(12);
-        messageCard.setCardElevation(4);
-        messageCard.setCardBackgroundColor(getResources().getColor(android.R.color.white));
+        card.setLayoutParams(cardParams);
 
-        // Create inner layout
-        LinearLayout innerLayout = new LinearLayout(this);
-        innerLayout.setOrientation(LinearLayout.VERTICAL);
-        innerLayout.setPadding(16, 12, 16, 12);
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(20, 20, 20, 20);
 
-        // User name and time header
-        LinearLayout headerLayout = new LinearLayout(this);
-        headerLayout.setOrientation(LinearLayout.HORIZONTAL);
+        TextView title = new TextView(this);
+        title.setText(userName + " • " + time);
+        title.setTextColor(getResources().getColor(android.R.color.darker_gray));
+        title.setTextSize(12);
 
-        TextView userNameText = new TextView(this);
-        userNameText.setText(userName);
-        userNameText.setTextSize(14);
-        userNameText.setTextColor(getResources().getColor(android.R.color.black));
-        userNameText.setTypeface(null, android.graphics.Typeface.BOLD);
+        TextView content = new TextView(this);
+        content.setText(message);
+        content.setTextSize(16);
+        content.setTextColor(getResources().getColor(android.R.color.black));
+        content.setPadding(0, 8, 0, 0);
 
-        TextView timeText = new TextView(this);
-        timeText.setText(time);
-        timeText.setTextSize(12);
-        timeText.setTextColor(getResources().getColor(android.R.color.darker_gray));
-        LinearLayout.LayoutParams timeParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        timeParams.setMargins(16, 0, 0, 0);
-        timeText.setLayoutParams(timeParams);
+        layout.addView(title);
+        layout.addView(content);
 
-        headerLayout.addView(userNameText);
-        headerLayout.addView(timeText);
-
-        // Message text
-        TextView messageText = new TextView(this);
-        messageText.setText(message);
-        messageText.setTextSize(16);
-        messageText.setTextColor(getResources().getColor(android.R.color.black));
-        LinearLayout.LayoutParams messageParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        messageParams.setMargins(0, 8, 0, 0);
-        messageText.setLayoutParams(messageParams);
-
-        // Add image placeholder if has image
         if (hasImage) {
-            TextView imageIndicator = new TextView(this);
-            imageIndicator.setText("📷 පින්තූරය ඇමුණුම් කර ඇත");
-            imageIndicator.setTextSize(14);
-            imageIndicator.setTextColor(getResources().getColor(android.R.color.holo_blue_dark));
-            LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            );
-            imageParams.setMargins(0, 8, 0, 0);
-            imageIndicator.setLayoutParams(imageParams);
-            innerLayout.addView(imageIndicator);
+            TextView imageNote = new TextView(this);
+            imageNote.setText("📷 Image attached");
+            imageNote.setTextColor(getResources().getColor(android.R.color.holo_blue_dark));
+            imageNote.setTextSize(14);
+            imageNote.setPadding(0, 8, 0, 0);
+            layout.addView(imageNote);
         }
 
-        // Action buttons
-        LinearLayout actionLayout = new LinearLayout(this);
-        actionLayout.setOrientation(LinearLayout.HORIZONTAL);
-        LinearLayout.LayoutParams actionParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        actionParams.setMargins(0, 12, 0, 0);
-        actionLayout.setLayoutParams(actionParams);
+        LinearLayout actions = new LinearLayout(this);
+        actions.setOrientation(LinearLayout.HORIZONTAL);
+        actions.setPadding(0, 12, 0, 0);
 
-        Button likeButton = new Button(this);
-        likeButton.setText("❤️ ආදරය");
-        likeButton.setTextSize(12);
-        likeButton.setBackground(null);
-        likeButton.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+        Button like = new Button(this);
+        like.setText("❤️ Like");
+        like.setTextSize(12);
+        like.setBackground(null);
+        like.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
 
-        Button replyButton = new Button(this);
-        replyButton.setText("💬 පිළිතුරු");
-        replyButton.setTextSize(12);
-        replyButton.setBackground(null);
-        replyButton.setTextColor(getResources().getColor(android.R.color.holo_blue_dark));
+        Button reply = new Button(this);
+        reply.setText("💬 Reply");
+        reply.setTextSize(12);
+        reply.setBackground(null);
+        reply.setTextColor(getResources().getColor(android.R.color.holo_blue_dark));
 
-        actionLayout.addView(likeButton);
-        actionLayout.addView(replyButton);
-
-        // Add all views to inner layout
-        innerLayout.addView(headerLayout);
-        innerLayout.addView(messageText);
-        innerLayout.addView(actionLayout);
-
-        messageCard.addView(innerLayout);
-        messagesContainer.addView(messageCard);
+        actions.addView(like);
+        actions.addView(reply);
+        layout.addView(actions);
+        card.addView(layout);
+        messagesContainer.addView(card);
     }
 
     private void openImagePicker() {
-        Intent intent = new Intent();
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "පින්තූරයක් තෝරන්න"), PICK_IMAGE_REQUEST);
+        startActivityForResult(Intent.createChooser(intent, "Select an image"), PICK_IMAGE_REQUEST);
     }
 
     private void openCamera() {
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (cameraIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(cameraIntent, CAMERA_REQUEST);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(intent, CAMERA_REQUEST);
         }
     }
 
     private void openWhatsApp() {
         try {
-            String message = "Govi Saviya ප්‍රජාවට සම්බන්ධ වන්න! 🌾\n\nගොවි ප්‍රජාවේ සාමාජිකයන් සමඟ අත්දැකීම් හුවමාරු කර ගන්න.";
-            Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
-            whatsappIntent.setType("text/plain");
-            whatsappIntent.setPackage("com.whatsapp");
-            whatsappIntent.putExtra(Intent.EXTRA_TEXT, message);
-            startActivity(whatsappIntent);
+            String url = "https://wa.me/qr/AQSUHR2RYNRKB1";
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(url));
+            startActivity(intent);
         } catch (Exception e) {
-            Toast.makeText(this, "WhatsApp ස්ථාපනය කර නැත", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Unable to open WhatsApp", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void openFacebook() {
         try {
-            String facebookUrl = "https://www.facebook.com/sharer/sharer.php?u=https://govisaviya.lk";
-            Intent facebookIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(facebookUrl));
-            startActivity(facebookIntent);
+            String url = "https://www.facebook.com/share/1AkHy6uHVd/";
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(url));
+            startActivity(intent);
         } catch (Exception e) {
-            Toast.makeText(this, "Facebook ස්ථාපනය කර නැත", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Unable to open Facebook", Toast.LENGTH_SHORT).show();
         }
     }
 
     private String getCurrentTime() {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
-        return sdf.format(new Date());
-    }
-
-    private void loadSampleMessages() {
-        // Add some sample messages
-        addMessageToChat("කමල් සිල්වා - කුරුණෑගල", "අද මගේ කොකනට් වගාවේ හොඳ අස්වැන්නක් ලැබුණා. කවුරුහරි ගන්න කැමතිද?", "10:30", false);
-        addMessageToChat("සුනිල් ගුණවර්ධන - අනුරාධපුරය", "පළිබෝධ නාශක භාවිතය ගැන ප්‍රශ්නයක් තියෙනවා. කවුරුහරි උදව් කරන්න පුළුවන්ද?", "11:15", false);
-        addMessageToChat("මාලිනී පෙරේරා - මාතර", "ජෛවික පොහොර සකස් කරන ක්‍රමයක් දන්නවා. අවශ්‍ය අයට කියන්න පුළුවන්.", "12:00", true);
-        addMessageToChat("රාජ් කුමාර - හම්බන්තොට", "වතුර කළමනාකරණය ගැන විශේෂඥ උපදෙස් අවශ්‍යයි. කොහෙන්ද ලබා ගන්නේ?", "13:45", false);
+        return new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (resultCode == RESULT_OK) {
             if (requestCode == PICK_IMAGE_REQUEST && data != null && data.getData() != null) {
                 selectedImageUri = data.getData();
                 selectedImageView.setImageURI(selectedImageUri);
                 selectedImageView.setVisibility(View.VISIBLE);
-                Toast.makeText(this, "පින්තූරය තෝරා ගන්නා ලදී", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Image selected", Toast.LENGTH_SHORT).show();
             } else if (requestCode == CAMERA_REQUEST && data != null) {
                 Bundle extras = data.getExtras();
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
                 selectedImageView.setImageBitmap(imageBitmap);
                 selectedImageView.setVisibility(View.VISIBLE);
-                Toast.makeText(this, "ඡායාරූපය ගන්නා ලදී", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Photo captured", Toast.LENGTH_SHORT).show();
             }
         }
     }

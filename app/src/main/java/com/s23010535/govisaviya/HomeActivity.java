@@ -2,9 +2,10 @@ package com.s23010535.govisaviya;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.List;
@@ -37,7 +38,17 @@ public class HomeActivity extends AppCompatActivity {
         findViewById(R.id.ivMarketplace).setOnClickListener(v -> startActivity(new Intent(this, MarketplaceActivity.class)));
         findViewById(R.id.ivVideoTutorials).setOnClickListener(v -> startActivity(new Intent(this, VideoTutorialsActivity.class)));
         findViewById(R.id.ivCommunity).setOnClickListener(v -> startActivity(new Intent(this, CommunityActivity.class)));
-        findViewById(R.id.ivDiseaseAlert).setOnClickListener(v -> startActivity(new Intent(this, DiseaseAlertActivity.class)));
+        findViewById(R.id.ivDiseaseAlert).setOnClickListener(v -> {
+            try {
+                Log.d("HomeActivity", "Attempting to navigate to DiseaseAlertActivity");
+                Intent intent = new Intent(this, DiseaseAlertActivity.class);
+                startActivity(intent);
+                Log.d("HomeActivity", "Successfully started DiseaseAlertActivity");
+            } catch (Exception e) {
+                Log.e("HomeActivity", "Error navigating to DiseaseAlertActivity: " + e.getMessage(), e);
+                Toast.makeText(this, "Error opening Disease Alert", Toast.LENGTH_SHORT).show();
+            }
+        });
         findViewById(R.id.ivExpertAdvice).setOnClickListener(v -> startActivity(new Intent(this, ExpertAdviceActivity.class)));
         findViewById(R.id.ivFarmCalendar).setOnClickListener(v -> startActivity(new Intent(this, FarmCalendarActivity.class)));
         findViewById(R.id.ivFinancialHelp).setOnClickListener(v -> startActivity(new Intent(this, FinancialHelpActivity.class)));

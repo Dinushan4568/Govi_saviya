@@ -3,6 +3,8 @@ package com.s23010535.govisaviya;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -10,7 +12,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MarketplaceActivity extends Activity {
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.s23010535.govisaviya.adapters.ProductAdapter;
+import com.s23010535.govisaviya.data.ProductDataManager;
+import com.s23010535.govisaviya.models.Product;
+
+import java.util.List;
+
+public class MarketplaceActivity extends Activity implements ProductAdapter.OnProductClickListener {
 
     private EditText searchEditText;
     private ImageView btnNotifications, btnFilter;
@@ -18,6 +29,11 @@ public class MarketplaceActivity extends Activity {
     private LinearLayout categoryDirectFood, categoryPesticides, categoryRental;
     private LinearLayout categorySeeds, categoryLabor, categoryOthers;
     private TextView btnViewAll;
+    private RecyclerView featuredProductsRecyclerView;
+    
+    private ProductAdapter productAdapter;
+    private ProductDataManager dataManager;
+    private List<Product> currentProducts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +41,11 @@ public class MarketplaceActivity extends Activity {
         setContentView(R.layout.activity_marketplace);
 
         initializeViews();
+        setupDataManager();
+        setupRecyclerView();
         setupClickListeners();
+        setupSearchFunctionality();
+        loadFeaturedProducts();
     }
 
     private void initializeViews() {
@@ -48,6 +68,19 @@ public class MarketplaceActivity extends Activity {
 
         // View all button
         btnViewAll = findViewById(R.id.btnViewAll);
+        
+        // RecyclerView
+        featuredProductsRecyclerView = findViewById(R.id.featuredProductsRecyclerView);
+    }
+
+    private void setupDataManager() {
+        dataManager = ProductDataManager.getInstance();
+    }
+
+    private void setupRecyclerView() {
+        productAdapter = new ProductAdapter(this, dataManager.getFeaturedProducts(), this);
+        featuredProductsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        featuredProductsRecyclerView.setAdapter(productAdapter);
     }
 
     private void setupClickListeners() {
@@ -55,9 +88,8 @@ public class MarketplaceActivity extends Activity {
         btnNotifications.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Open notifications activity
                 showToast("Opening notifications...");
-                // Intent intent = new Intent(MarketplaceActivity.this, NotificationsActivity.class);
+                // Intent intent = new Intent(MarketplaceActivity.this, NotificationActivity.class);
                 // startActivity(intent);
             }
         });
@@ -66,9 +98,7 @@ public class MarketplaceActivity extends Activity {
         btnFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Open filter dialog
-                showToast("Opening filters...");
-                // showFilterDialog();
+                showFilterDialog();
             }
         });
 
@@ -139,40 +169,97 @@ public class MarketplaceActivity extends Activity {
         btnViewAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showToast("Showing all featured products...");
-                // Intent intent = new Intent(MarketplaceActivity.this, AllProductsActivity.class);
-                // startActivity(intent);
+                openAllProductsView();
             }
         });
     }
 
+    private void setupSearchFunctionality() {
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                performSearch(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+    }
+
+    private void loadFeaturedProducts() {
+        currentProducts = dataManager.getFeaturedProducts();
+        productAdapter.updateProducts(currentProducts);
+    }
+
+    private void performSearch(String query) {
+        if (query.trim().isEmpty()) {
+            // Show featured products when search is empty
+            currentProducts = dataManager.getFeaturedProducts();
+        } else {
+            // Perform search
+            currentProducts = dataManager.searchProducts(query);
+        }
+        productAdapter.updateProducts(currentProducts);
+    }
+
     private void openCategoryView(String categoryId, String categoryName) {
         showToast("Opening " + categoryName + " category...");
-
-        // Create intent to open category-specific activity
+        
+        // Get products for this category
+        List<Product> categoryProducts = dataManager.getProductsByCategory(categoryId);
+        
+        // TODO: Open category-specific activity with products
         // Intent intent = new Intent(MarketplaceActivity.this, CategoryActivity.class);
         // intent.putExtra("category_id", categoryId);
         // intent.putExtra("category_name", categoryName);
         // startActivity(intent);
+        
+        showToast("Found " + categoryProducts.size() + " products in " + categoryName);
+    }
 
-        // For now, just show a toast message
-        showToast("Category: " + categoryName);
+    private void openAllProductsView() {
+        showToast("Opening all products...");
+        // TODO: Open all products activity
+        // Intent intent = new Intent(MarketplaceActivity.this, AllProductsActivity.class);
+        // startActivity(intent);
+    }
+
+    private void showFilterDialog() {
+        // TODO: Implement filter dialog
+        showToast("Filter options coming soon...");
     }
 
     private void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    // Method to handle search functionality
-    private void performSearch() {
-        String searchQuery = searchEditText.getText().toString().trim();
-        if (!searchQuery.isEmpty()) {
-            showToast("Searching for: " + searchQuery);
-            // Implement search logic here
-            // You can filter products based on the search query
-        } else {
-            showToast("Please enter search terms");
-        }
+    // ProductAdapter.OnProductClickListener implementations
+    @Override
+    public void onProductClick(Product product) {
+        showToast("Opening product: " + product.getName());
+        // TODO: Open product detail activity
+        // Intent intent = new Intent(MarketplaceActivity.this, ProductDetailActivity.class);
+        // intent.putExtra("product_id", product.getId());
+        // startActivity(intent);
+    }
+
+    @Override
+    public void onAddToCartClick(Product product) {
+        showToast("Added " + product.getName() + " to cart");
+        // TODO: Implement add to cart functionality
+        // CartManager.getInstance().addToCart(product);
+    }
+
+    @Override
+    public void onBuyNowClick(Product product) {
+        showToast("Buying " + product.getName() + " now");
+        // TODO: Implement buy now functionality
+        // Intent intent = new Intent(MarketplaceActivity.this, CheckoutActivity.class);
+        // intent.putExtra("product_id", product.getId());
+        // startActivity(intent);
     }
 
     // Method to handle back button press
@@ -181,4 +268,4 @@ public class MarketplaceActivity extends Activity {
         super.onBackPressed();
         // You can add custom back button behavior here if needed
     }
-}
+} 

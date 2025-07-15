@@ -101,7 +101,7 @@
                     android:layout_width="190dp"
                     android:layout_height="190dp"
                     android:layout_marginBottom="10dp"
-                    android:background="@drawable/bg_tutorials_icon"
+                    android:background="@drawable/bg_tutorials_icon1"
                     android:padding="10dp" />
 
                 <ImageView

@@ -261,57 +261,30 @@ public class VideoTutorialsActivity extends AppCompatActivity implements VideoAd
 
     private void loadVideos() {
         allVideos = new ArrayList<>();
-        
         // Featured video
         featuredVideo = new Video(
             "featured_1",
-            "Complete Guide to Organic Farming in Sri Lanka",
-            "Learn the fundamentals of organic farming techniques suitable for Sri Lankan climate and soil conditions.",
-            "",
-            "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+            "එළවලු වගාවට පණුවෝ",
+            "ඔයාගේ එළවලු වාගාවේ පණුවෝ ඉන්නවද ? මෙන්න විසදුම - ඉල් මැස්සාගේ හානීය",
+            "https://img.youtube.com/vi/9F7paHFzpcc/hqdefault.jpg",
+            "https://www.youtube.com/watch?v=9F7paHFzpcc",
             "SmartAgri",
-            "15:30",
-            "Organic Farming",
-            125000,
-            "1 week ago"
+            "12:45",
+            "Pest Control",
+            89000,
+            "3 days ago"
         );
-        
-        // Sample videos from SmartAgri channel
-        allVideos.add(new Video("1", "Pest Control Methods for Vegetables", 
-            "Effective natural pest control techniques for vegetable farming", "", 
-            "https://www.youtube.com/watch?v=example1", "SmartAgri", "12:45", "Pest Control", 89000, "3 days ago"));
-        
-        allVideos.add(new Video("2", "Drip Irrigation System Setup", 
-            "Complete guide to setting up efficient drip irrigation for your farm", "", 
-            "https://www.youtube.com/watch?v=example2", "SmartAgri", "18:20", "Irrigation", 67000, "1 week ago"));
-        
-        allVideos.add(new Video("3", "Harvesting Techniques for Different Crops", 
-            "Best practices for harvesting various crops to maximize yield and quality", "", 
-            "https://www.youtube.com/watch?v=example3", "SmartAgri", "14:15", "Harvesting", 45000, "2 weeks ago"));
-        
-        allVideos.add(new Video("4", "Soil Preparation for Organic Farming", 
-            "How to prepare and enrich your soil for organic farming success", "", 
-            "https://www.youtube.com/watch?v=example4", "SmartAgri", "16:30", "Organic Farming", 78000, "1 week ago"));
-        
-        allVideos.add(new Video("5", "Natural Fertilizer Preparation", 
-            "DIY organic fertilizers using kitchen waste and natural materials", "", 
-            "https://www.youtube.com/watch?v=example5", "SmartAgri", "11:45", "Organic Farming", 92000, "4 days ago"));
-        
-        allVideos.add(new Video("6", "Crop Rotation Planning", 
-            "Strategic crop rotation to maintain soil health and prevent diseases", "", 
-            "https://www.youtube.com/watch?v=example6", "SmartAgri", "13:20", "Organic Farming", 56000, "1 week ago"));
-        
-        allVideos.add(new Video("7", "Water Management in Farming", 
-            "Efficient water management techniques for sustainable farming", "", 
-            "https://www.youtube.com/watch?v=example7", "SmartAgri", "19:10", "Irrigation", 34000, "2 weeks ago"));
-        
-        allVideos.add(new Video("8", "Post-Harvest Storage Methods", 
-            "Proper storage techniques to preserve your harvest quality", "", 
-            "https://www.youtube.com/watch?v=example8", "SmartAgri", "10:30", "Harvesting", 42000, "3 weeks ago"));
-        
+        allVideos.add(new Video("1", "බෙල්පෙපර් වගාව", "බෙල් පෙපර් වගාව ගැන විස්තරයක්", "https://img.youtube.com/vi/jWvtY8k534A/hqdefault.jpg", "https://www.youtube.com/watch?v=jWvtY8k534A", "SmartAgri", "10:20", "Organic Farming", 75000, "1 week ago"));
+        allVideos.add(new Video("2", "පිපිඤ්ඤා වගාව", "පිපිඤ්ඤා වගාවේ හොදම ටික", "https://img.youtube.com/vi/7d_Fd7o_NE0/hqdefault.jpg", "https://www.youtube.com/watch?v=7d_Fd7o_NE0", "SmartAgri", "14:30", "Irrigation", 62000, "2 weeks ago"));
+        allVideos.add(new Video("3", "කුකුළු වගාව", "කුකුළු වගාව සාර්ථකව කරන්නේ කෙසේද", "https://img.youtube.com/vi/1O4hF1p5z6A/hqdefault.jpg", "https://www.youtube.com/watch?v=1O4hF1p5z6A", "SmartAgri", "11:10", "Livestock", 54000, "5 days ago"));
+        allVideos.add(new Video("4", "කෘමිනාශක භාවිතය", "ආරක්ෂිත කෘමිනාශක භාවිතය", "https://img.youtube.com/vi/2Fh8p1f5z6B/hqdefault.jpg", "https://www.youtube.com/watch?v=2Fh8p1f5z6B", "SmartAgri", "13:00", "Pesticides", 48000, "1 week ago"));
+        allVideos.add(new Video("5", "පොහොර සකස් කිරීම", "පොහොර සකස් කිරීමේ ක්‍රම", "https://img.youtube.com/vi/3Gh9q2g6z7C/hqdefault.jpg", "https://www.youtube.com/watch?v=3Gh9q2g6z7C", "SmartAgri", "15:40", "Fertilizer", 39000, "3 weeks ago"));
+        allVideos.add(new Video("6", "කෘෂිකර්ම උපදෙස්", "විශේෂ කෘෂිකර්ම උපදෙස්", "https://img.youtube.com/vi/4Jk0r3h7z8D/hqdefault.jpg", "https://www.youtube.com/watch?v=4Jk0r3h7z8D", "SmartAgri", "16:20", "Expert Advice", 41000, "2 weeks ago"));
+        allVideos.add(new Video("7", "ජල කළමනාකරණය", "ජල කළමනාකරණය සඳහා උපදෙස්", "https://img.youtube.com/vi/5Kl1s4i8z9E/hqdefault.jpg", "https://www.youtube.com/watch?v=5Kl1s4i8z9E", "SmartAgri", "12:50", "Water Management", 37000, "1 week ago"));
+        allVideos.add(new Video("8", "අස්වැන්න රැකීම", "අස්වැන්න රැකීමේ ක්‍රම", "https://img.youtube.com/vi/6Lm2t5j9z0F/hqdefault.jpg", "https://www.youtube.com/watch?v=6Lm2t5j9z0F", "SmartAgri", "10:30", "Harvesting", 32000, "4 days ago"));
+        allVideos.add(new Video("9", "ඉඩම් සකස් කිරීම", "ඉඩම් සකස් කිරීමේ වැදගත්කම", "https://img.youtube.com/vi/7Mn3u6k0z1G/hqdefault.jpg", "https://www.youtube.com/watch?v=7Mn3u6k0z1G", "SmartAgri", "13:10", "Soil Preparation", 28000, "2 weeks ago"));
+        allVideos.add(new Video("10", "පළතුරු වගාව", "පළතුරු වගාවේ නව ක්‍රම", "https://img.youtube.com/vi/8No4v7l1z2H/hqdefault.jpg", "https://www.youtube.com/watch?v=8No4v7l1z2H", "SmartAgri", "11:55", "Fruit Farming", 25000, "3 weeks ago"));
         filteredVideos = new ArrayList<>(allVideos);
-        
-        // Set featured video
         tvFeaturedTitle.setText(featuredVideo.getTitle());
         tvFeaturedChannel.setText(featuredVideo.getChannelName());
     }

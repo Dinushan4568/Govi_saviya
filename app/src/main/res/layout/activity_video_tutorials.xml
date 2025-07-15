@@ -119,17 +119,17 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/chipOrganic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Organic Farming"
-                style="@style/Widget.MaterialComponents.Chip.Choice" />
-
-            <com.google.android.material.chip.Chip
                 android:id="@+id/chipPest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Pest Control"
+                style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipOrganic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Organic Farming"
                 style="@style/Widget.MaterialComponents.Chip.Choice" />
 
             <com.google.android.material.chip.Chip
@@ -140,10 +140,59 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/chipHarvest"
+                android:id="@+id/chipLivestock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Livestock"
+                style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipPesticides"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pesticides"
+                style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFertilizer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fertilizer"
+                style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipExpertAdvice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Expert Advice"
+                style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipWaterManagement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Water Management"
+                style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipHarvesting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Harvesting"
+                style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipSoilPreparation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Soil Preparation"
+                style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFruitFarming"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fruit Farming"
                 style="@style/Widget.MaterialComponents.Chip.Choice" />
 
         </com.google.android.material.chip.ChipGroup>

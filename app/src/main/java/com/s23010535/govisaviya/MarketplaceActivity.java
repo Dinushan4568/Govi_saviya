@@ -31,12 +31,8 @@ public class MarketplaceActivity extends Activity implements ProductAdapter.OnPr
     private LinearLayout btnSellProduct, btnMyOrders;
     private LinearLayout categoryDirectFood, categoryPesticides, categoryRental;
     private LinearLayout categorySeeds, categoryLabor, categoryOthers;
-    private TextView btnViewAll;
-    private RecyclerView featuredProductsRecyclerView;
-    
-    private ProductAdapter productAdapter;
+    private LinearLayout categoryAll;
     private ProductDataManager dataManager;
-    private List<Product> currentProducts;
     private SessionManager sessionManager;
     private DatabaseManager databaseManager;
 
@@ -47,10 +43,8 @@ public class MarketplaceActivity extends Activity implements ProductAdapter.OnPr
 
         initializeViews();
         setupManagers();
-        setupRecyclerView();
         setupClickListeners();
         setupSearchFunctionality();
-        loadFeaturedProducts();
     }
 
     private void initializeViews() {
@@ -70,24 +64,13 @@ public class MarketplaceActivity extends Activity implements ProductAdapter.OnPr
         categorySeeds = findViewById(R.id.categorySeeds);
         categoryLabor = findViewById(R.id.categoryLabor);
         categoryOthers = findViewById(R.id.categoryOthers);
-
-        // View all button
-        btnViewAll = findViewById(R.id.btnViewAll);
-        
-        // RecyclerView
-        featuredProductsRecyclerView = findViewById(R.id.featuredProductsRecyclerView);
+        categoryAll = findViewById(R.id.categoryAll);
     }
 
     private void setupManagers() {
         dataManager = ProductDataManager.getInstance(this);
         sessionManager = new SessionManager(this);
         databaseManager = DatabaseManager.getInstance(this);
-    }
-
-    private void setupRecyclerView() {
-        productAdapter = new ProductAdapter(this, dataManager.getFeaturedProducts(), this);
-        featuredProductsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        featuredProductsRecyclerView.setAdapter(productAdapter);
     }
 
     private void setupClickListeners() {
@@ -172,13 +155,15 @@ public class MarketplaceActivity extends Activity implements ProductAdapter.OnPr
             }
         });
 
-        // View All button
-        btnViewAll.setOnClickListener(new View.OnClickListener() {
+        categoryAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openAllProductsView();
             }
         });
+
+        // View All button
+        // Removed: btnViewAll.setOnClickListener(new View.OnClickListener() { ... });
     }
 
     private void setupSearchFunctionality() {
@@ -196,20 +181,15 @@ public class MarketplaceActivity extends Activity implements ProductAdapter.OnPr
         });
     }
 
-    private void loadFeaturedProducts() {
-        currentProducts = dataManager.getFeaturedProducts();
-        productAdapter.updateProducts(currentProducts);
-    }
-
     private void performSearch(String query) {
         if (query.trim().isEmpty()) {
             // Show featured products when search is empty
-            currentProducts = dataManager.getFeaturedProducts();
+            // currentProducts = dataManager.getFeaturedProducts(); // Removed
         } else {
             // Perform search
-            currentProducts = dataManager.searchProducts(query);
+            // currentProducts = dataManager.searchProducts(query); // Removed
         }
-        productAdapter.updateProducts(currentProducts);
+        // productAdapter.updateProducts(currentProducts); // Removed
     }
 
     private void openCategoryView(String categoryId, String categoryName) {

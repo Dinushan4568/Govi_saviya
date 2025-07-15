@@ -165,6 +165,43 @@
             android:rowCount="3"
             android:layout_marginBottom="24dp">
 
+            <!-- All Category -->
+            <LinearLayout
+                android:id="@+id/categoryAll"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:orientation="vertical"
+                android:background="@drawable/category_card_background"
+                android:padding="16dp"
+                android:layout_margin="4dp"
+                android:gravity="center"
+                android:clickable="true">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_marketplace"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="All"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:textColor="#009688" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="All products &amp; items"
+                    android:textSize="10sp"
+                    android:textColor="#666666" />
+
+            </LinearLayout>
+
             <!-- Direct Food Sale -->
             <LinearLayout
                 android:id="@+id/categoryDirectFood"
@@ -388,43 +425,6 @@
             </LinearLayout>
 
         </GridLayout>
-
-        <!-- Featured Products Section -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="12dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Featured Products"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#333333" />
-
-            <TextView
-                android:id="@+id/btnViewAll"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="View All"
-                android:textSize="14sp"
-                android:textColor="#4CAF50"
-                android:clickable="true"
-                android:background="?android:attr/selectableItemBackground" />
-
-        </LinearLayout>
-
-        <!-- Featured Products RecyclerView -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/featuredProductsRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:nestedScrollingEnabled="false" />
 
         <!-- Recent Activity Section -->
         <TextView

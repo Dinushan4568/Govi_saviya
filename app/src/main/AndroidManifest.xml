@@ -52,6 +52,7 @@
         <activity android:name=".NotificationActivity" android:exported="false" />
         <activity android:name=".SellProductActivity" />
         <activity android:name=".ProductListActivity" />
+        <activity android:name=".ComingSoonActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

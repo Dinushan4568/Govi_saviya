@@ -105,9 +105,8 @@ public class MarketplaceActivity extends Activity implements ProductAdapter.OnPr
         btnMyOrders.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showToast("Opening my orders...");
-                // Intent intent = new Intent(MarketplaceActivity.this, MyOrdersActivity.class);
-                // startActivity(intent);
+                Intent intent = new Intent(MarketplaceActivity.this, ComingSoonActivity.class);
+                startActivity(intent);
             }
         });
 

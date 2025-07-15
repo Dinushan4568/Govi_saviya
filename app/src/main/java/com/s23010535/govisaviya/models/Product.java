@@ -27,6 +27,7 @@ public class Product implements Serializable {
     private String deliveryOptions; // pickup, delivery, both
     private double deliveryCost;
     private String tags; // comma separated tags for search
+    private String imageUri;
 
     // Default constructor
     public Product() {
@@ -120,6 +121,13 @@ public class Product implements Serializable {
 
     public String getTags() { return tags; }
     public void setTags(String tags) { this.tags = tags; }
+
+    public String getImageUri() {
+        return imageUri;
+    }
+    public void setImageUri(String imageUri) {
+        this.imageUri = imageUri;
+    }
 
     // Helper methods
     public String getFormattedPrice() {

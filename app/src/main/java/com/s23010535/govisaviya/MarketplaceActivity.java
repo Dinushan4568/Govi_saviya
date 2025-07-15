@@ -96,9 +96,8 @@ public class MarketplaceActivity extends Activity implements ProductAdapter.OnPr
         btnSellProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showToast("Opening sell product form...");
-                // Intent intent = new Intent(MarketplaceActivity.this, SellProductActivity.class);
-                // startActivity(intent);
+                Intent intent = new Intent(MarketplaceActivity.this, SellProductActivity.class);
+                startActivity(intent);
             }
         });
 

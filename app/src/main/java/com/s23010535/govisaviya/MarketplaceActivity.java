@@ -115,49 +115,49 @@ public class MarketplaceActivity extends Activity implements ProductAdapter.OnPr
         categoryDirectFood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openCategoryView("direct_food", "Direct Food Sale");
+                openProductList("direct_food", "Direct Food Sale");
             }
         });
 
         categoryPesticides.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openCategoryView("pesticides", "Pesticides");
+                openProductList("pesticides", "Pesticides");
             }
         });
 
         categoryRental.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openCategoryView("rental", "Equipment Rental");
+                openProductList("rental", "Equipment Rental");
             }
         });
 
         categorySeeds.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openCategoryView("seeds", "Seeds & Fertilizers");
+                openProductList("seeds", "Seeds & Fertilizers");
             }
         });
 
         categoryLabor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openCategoryView("labor", "Labor Services");
+                openProductList("labor", "Labor Services");
             }
         });
 
         categoryOthers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openCategoryView("others", "Other Items");
+                openProductList("others", "Other Items");
             }
         });
 
         categoryAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openAllProductsView();
+                openProductList("all", "All Products");
             }
         });
 
@@ -191,26 +191,11 @@ public class MarketplaceActivity extends Activity implements ProductAdapter.OnPr
         // productAdapter.updateProducts(currentProducts); // Removed
     }
 
-    private void openCategoryView(String categoryId, String categoryName) {
-        showToast("Opening " + categoryName + " category...");
-        
-        // Get products for this category
-        List<Product> categoryProducts = dataManager.getProductsByCategory(categoryId);
-        
-        // TODO: Open category-specific activity with products
-        // Intent intent = new Intent(MarketplaceActivity.this, CategoryActivity.class);
-        // intent.putExtra("category_id", categoryId);
-        // intent.putExtra("category_name", categoryName);
-        // startActivity(intent);
-        
-        showToast("Found " + categoryProducts.size() + " products in " + categoryName);
-    }
-
-    private void openAllProductsView() {
-        showToast("Opening all products...");
-        // TODO: Open all products activity
-        // Intent intent = new Intent(MarketplaceActivity.this, AllProductsActivity.class);
-        // startActivity(intent);
+    private void openProductList(String categoryId, String categoryName) {
+        Intent intent = new Intent(MarketplaceActivity.this, ProductListActivity.class);
+        intent.putExtra(ProductListActivity.EXTRA_CATEGORY_ID, categoryId);
+        intent.putExtra(ProductListActivity.EXTRA_CATEGORY_NAME, categoryName);
+        startActivity(intent);
     }
 
     private void showFilterDialog() {

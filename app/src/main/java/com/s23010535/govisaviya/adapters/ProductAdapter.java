@@ -174,10 +174,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 featuredBadge.setVisibility(View.GONE);
             }
 
-            // Set product image (placeholder for now, will be replaced with actual image loading)
-            // TODO: Implement image loading with Glide or Picasso
-            if (product.getImageUrl() != null && !product.getImageUrl().isEmpty()) {
-                // Load image from URL
+            // Set product image (show captured/selected image if available)
+            if (product.getImageUri() != null && !product.getImageUri().isEmpty()) {
+                productImage.setImageURI(android.net.Uri.parse(product.getImageUri()));
+            } else if (product.getImageUrl() != null && !product.getImageUrl().isEmpty()) {
+                // Load image from URL (future use)
                 // Glide.with(context).load(product.getImageUrl()).into(productImage);
             } else {
                 // Set default image based on category

@@ -39,7 +39,7 @@ public class SellProductActivity extends AppCompatActivity {
 
     private ImageView ivProductImage;
     private Button btnPickImage, btnSubmit;
-    private EditText etProductName, etDescription, etPrice;
+    private EditText etProductName, etDescription, etPrice, etQuantity, etLocation;
     private ChipGroup chipGroupCategory;
     private Uri selectedImageUri;
     private String selectedCategoryId;
@@ -55,6 +55,8 @@ public class SellProductActivity extends AppCompatActivity {
         etProductName = findViewById(R.id.etProductName);
         etDescription = findViewById(R.id.etDescription);
         etPrice = findViewById(R.id.etPrice);
+        etQuantity = findViewById(R.id.etQuantity);
+        etLocation = findViewById(R.id.etLocation);
         chipGroupCategory = findViewById(R.id.chipGroupCategory);
 
         btnPickImage.setOnClickListener(new View.OnClickListener() {
@@ -143,9 +145,17 @@ public class SellProductActivity extends AppCompatActivity {
         String name = etProductName.getText().toString().trim();
         String description = etDescription.getText().toString().trim();
         String priceStr = etPrice.getText().toString().trim();
+        String quantityStr = etQuantity.getText().toString().trim();
+        String location = etLocation.getText().toString().trim();
         double price = 0;
+        int quantity = 0;
         try {
             price = Double.parseDouble(priceStr);
+        } catch (Exception e) {
+            // ignore, will show error below
+        }
+        try {
+            quantity = Integer.parseInt(quantityStr);
         } catch (Exception e) {
             // ignore, will show error below
         }
@@ -158,8 +168,8 @@ public class SellProductActivity extends AppCompatActivity {
         String category = selectedChip.getText().toString();
         String categoryId = getCategoryIdFromName(category);
 
-        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(description) || price <= 0) {
-            Toast.makeText(this, "Please fill all fields and enter a valid price", Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(description) || price <= 0 || quantity <= 0 || TextUtils.isEmpty(location)) {
+            Toast.makeText(this, "Please fill all fields and enter valid price, quantity, and location", Toast.LENGTH_SHORT).show();
             return;
         }
         if (selectedImageUri == null) {
@@ -170,6 +180,8 @@ public class SellProductActivity extends AppCompatActivity {
         // Create and save product
         Product product = new Product(name, description, price, categoryId, "seller001", "You");
         product.setImageUri(selectedImageUri.toString());
+        product.setStockQuantity(quantity);
+        product.setSellerLocation(location);
         boolean success = ProductDataManager.getInstance(this).addProduct(product);
         if (success) {
             Toast.makeText(this, "Product added successfully!", Toast.LENGTH_SHORT).show();

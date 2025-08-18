@@ -7,54 +7,58 @@
     android:background="#FAFAFA">
 
     <!-- Modern Header -->
+
+    <!-- Quick Actions -->
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_height="162dp"
         android:background="@drawable/header_background"
         android:elevation="4dp"
+        android:orientation="vertical"
         android:paddingBottom="16dp">
 
         <!-- Top Bar -->
+
+        <!-- Community Stats -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="16dp"
-            android:gravity="center_vertical">
+            android:padding="16dp">
 
             <ImageButton
                 android:id="@+id/backButton"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/ic_back"
-                android:background="@drawable/circle_background"
+                android:background="@drawable/ic_back"
+                android:contentDescription="Back"
                 android:scaleType="centerInside"
-                android:contentDescription="Back" />
+                android:src="@drawable/ic_back" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:layout_weight="1"
-                android:text="Community"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:textColor="#FFFFFF"
                 android:gravity="center"
-                android:layout_marginStart="16dp" />
+                android:text="Community"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <ImageButton
                 android:id="@+id/notificationButton"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/ic_notifications"
-                android:background="@drawable/circle_background"
+                android:background="@drawable/ic_notifications"
+                android:contentDescription="Notifications"
                 android:scaleType="centerInside"
-                android:contentDescription="Notifications" />
+                android:src="@drawable/ic_notifications" />
 
         </LinearLayout>
 
-        <!-- Community Stats -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -64,81 +68,81 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:background="@drawable/card_background_semi"
                 android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/card_background_semi"
+                android:gravity="center"
+                android:orientation="vertical"
                 android:padding="12dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1,247"
+                    android:text="4"
+                    android:textColor="#4CAF50"
                     android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:textColor="#4CAF50" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Members"
-                    android:textSize="12sp"
-                    android:textColor="#FFFFFF" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:background="@drawable/card_background_semi"
                 android:layout_marginHorizontal="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/card_background_semi"
+                android:gravity="center"
+                android:orientation="vertical"
                 android:padding="12dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="89"
+                    android:textColor="#FFC107"
                     android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:textColor="#FFC107" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Discussions"
-                    android:textSize="12sp"
-                    android:textColor="#FFFFFF" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:background="@drawable/card_background_semi"
                 android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/card_background_semi"
+                android:gravity="center"
+                android:orientation="vertical"
                 android:padding="12dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="47"
+                    android:text="2"
+                    android:textColor="#2196F3"
                     android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:textColor="#2196F3" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Online"
-                    android:textSize="12sp"
-                    android:textColor="#FFFFFF" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -146,7 +150,6 @@
 
     </LinearLayout>
 
-    <!-- Quick Actions -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -160,12 +163,10 @@
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:text="WhatsApp"
             android:textSize="14sp"
             android:textColor="#FFFFFF"
-            android:background="@drawable/button_green_rounded"
             android:layout_marginEnd="8dp"
-            android:drawableStart="@drawable/ic_chat"
+            android:background="@drawable/whatsapp"
             android:drawablePadding="8dp" />
 
         <Button
@@ -173,12 +174,10 @@
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:text="Facebook"
             android:textSize="14sp"
             android:textColor="#FFFFFF"
-            android:background="@drawable/button_facebook"
             android:layout_marginStart="8dp"
-            android:drawableStart="@drawable/ic_chat"
+            android:background="@drawable/facebook"
             android:drawablePadding="8dp" />
 
     </LinearLayout>

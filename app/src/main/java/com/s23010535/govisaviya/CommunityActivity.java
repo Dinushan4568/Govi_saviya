@@ -14,6 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import android.content.SharedPreferences;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONException;
 
 public class CommunityActivity extends Activity {
     private static final int PICK_IMAGE_REQUEST = 1;
@@ -28,6 +32,9 @@ public class CommunityActivity extends Activity {
     private List<CommunityMessage> messages;
     private CommunityAdapter adapter;
 
+    private static final String PREFS_NAME = "community_prefs";
+    private static final String KEY_MESSAGES = "messages";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +43,7 @@ public class CommunityActivity extends Activity {
         initializeViews();
         initializeData();
         setupClickListeners();
-        addSampleMessages();
+        loadMessagesFromStorage();
     }
 
     private void initializeViews() {
@@ -123,11 +130,7 @@ public class CommunityActivity extends Activity {
     }
 
     private void addSampleMessages() {
-        addMessage("Farmer John", "Just harvested my paddy field today! The yield looks promising.", "14:30", false, 12, 3);
-        addMessage("Maria Silva", "Having trouble with pest control in my vegetable garden.", "14:25", false, 8, 5);
-        addMessage("Expert Advisor", "🌾 Tip: Always check soil moisture before irrigation.", "14:15", false, 25, 7);
-        addMessage("Local Farmer", "Best time to plant tomatoes in this season?", "14:10", false, 15, 8);
-        addMessage("Community Admin", "Welcome to our farming community! Share your experiences.", "14:05", false, 30, 12);
+        // Removed sample messages
     }
 
     private void sendMessage() {
@@ -137,13 +140,22 @@ public class CommunityActivity extends Activity {
             return;
         }
 
-        addMessage("You", messageText, getCurrentTime(), false, 0, 0);
+        boolean hasImg = selectedImageUri != null;
+        addMessage("You", messageText, getCurrentTime(), hasImg, 0, 0, hasImg ? selectedImageUri.toString() : null);
         messageEditText.setText("");
+        // Clear selected image preview state after sending
+        selectedImageUri = null;
+        selectedImageView.setVisibility(View.GONE);
+        saveMessagesToStorage();
         Toast.makeText(this, "Message sent to community!", Toast.LENGTH_SHORT).show();
     }
 
     private void addMessage(String userName, String message, String time, boolean hasImage, int likes, int replies) {
-        CommunityMessage msg = new CommunityMessage(userName, message, time, hasImage, likes, replies);
+        addMessage(userName, message, time, hasImage, likes, replies, null);
+    }
+
+    private void addMessage(String userName, String message, String time, boolean hasImage, int likes, int replies, String imageUri) {
+        CommunityMessage msg = new CommunityMessage(userName, message, time, hasImage, likes, replies, imageUri);
         messages.add(0, msg);
         adapter.notifyItemInserted(0);
         messagesRecyclerView.scrollToPosition(0);
@@ -175,15 +187,73 @@ public class CommunityActivity extends Activity {
         public boolean hasImage;
         public int likes;
         public int replies;
+        public String imageUri;
 
         public CommunityMessage(String userName, String message, String time, boolean hasImage, int likes, int replies) {
+            this(userName, message, time, hasImage, likes, replies, null);
+        }
+
+        public CommunityMessage(String userName, String message, String time, boolean hasImage, int likes, int replies, String imageUri) {
             this.userName = userName;
             this.message = message;
             this.time = time;
             this.hasImage = hasImage;
             this.likes = likes;
             this.replies = replies;
+            this.imageUri = imageUri;
         }
+
+        public JSONObject toJson() throws JSONException {
+            JSONObject obj = new JSONObject();
+            obj.put("userName", userName);
+            obj.put("message", message);
+            obj.put("time", time);
+            obj.put("hasImage", hasImage);
+            obj.put("likes", likes);
+            obj.put("replies", replies);
+            obj.put("imageUri", imageUri == null ? JSONObject.NULL : imageUri);
+            return obj;
+        }
+
+        public static CommunityMessage fromJson(JSONObject obj) throws JSONException {
+            String userName = obj.optString("userName", "User");
+            String message = obj.optString("message", "");
+            String time = obj.optString("time", "");
+            boolean hasImage = obj.optBoolean("hasImage", false);
+            int likes = obj.optInt("likes", 0);
+            int replies = obj.optInt("replies", 0);
+            String imageUri = obj.isNull("imageUri") ? null : obj.optString("imageUri", null);
+            return new CommunityMessage(userName, message, time, hasImage, likes, replies, imageUri);
+        }
+    }
+
+    private void loadMessagesFromStorage() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        String json = prefs.getString(KEY_MESSAGES, null);
+        messages.clear();
+        if (json != null) {
+            try {
+                JSONArray arr = new JSONArray(json);
+                for (int i = 0; i < arr.length(); i++) {
+                    JSONObject obj = arr.getJSONObject(i);
+                    messages.add(CommunityMessage.fromJson(obj));
+                }
+            } catch (JSONException e) {
+                // ignore malformed
+            }
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    private void saveMessagesToStorage() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        JSONArray arr = new JSONArray();
+        for (CommunityMessage m : messages) {
+            try {
+                arr.put(m.toJson());
+            } catch (JSONException ignored) {}
+        }
+        prefs.edit().putString(KEY_MESSAGES, arr.toString()).apply();
     }
 
     private class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.MessageViewHolder> {
@@ -202,11 +272,18 @@ public class CommunityActivity extends Activity {
         @Override
         public void onBindViewHolder(MessageViewHolder holder, int position) {
             CommunityMessage message = messages.get(position);
-            
+
             holder.userName.setText(message.userName);
             holder.timeText.setText(" • " + message.time);
             holder.messageText.setText(message.message);
-            
+
+            if (message.imageUri != null && !message.imageUri.isEmpty()) {
+                holder.messageImage.setVisibility(View.VISIBLE);
+                holder.messageImage.setImageURI(Uri.parse(message.imageUri));
+            } else {
+                holder.messageImage.setVisibility(View.GONE);
+            }
+
             // Set different colors for different user types
             if (message.userName.equals("Expert Advisor")) {
                 holder.userName.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
@@ -224,12 +301,13 @@ public class CommunityActivity extends Activity {
 
         class MessageViewHolder extends RecyclerView.ViewHolder {
             TextView userName, timeText, messageText;
-
-            MessageViewHolder(View itemView) {
+            ImageView messageImage;
+            public MessageViewHolder(View itemView) {
                 super(itemView);
                 userName = itemView.findViewById(R.id.userName);
                 timeText = itemView.findViewById(R.id.timeText);
                 messageText = itemView.findViewById(R.id.messageText);
+                messageImage = itemView.findViewById(R.id.messageImage);
             }
         }
     }

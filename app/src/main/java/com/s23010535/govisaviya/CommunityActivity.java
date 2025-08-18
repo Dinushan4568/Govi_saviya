@@ -18,10 +18,19 @@ import android.content.SharedPreferences;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONException;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import com.s23010535.govisaviya.data.SessionManager;
 
 public class CommunityActivity extends Activity {
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final int CAMERA_REQUEST = 2;
+    private static final int PERMISSION_REQUEST_CAMERA = 100;
+    private static final int PERMISSION_REQUEST_READ_IMAGES = 101;
 
     private EditText messageEditText;
     private ImageButton sendButton, backButton, notificationButton;
@@ -31,6 +40,7 @@ public class CommunityActivity extends Activity {
     private Uri selectedImageUri;
     private List<CommunityMessage> messages;
     private CommunityAdapter adapter;
+    private SessionManager sessionManager;
 
     private static final String PREFS_NAME = "community_prefs";
     private static final String KEY_MESSAGES = "messages";
@@ -68,6 +78,7 @@ public class CommunityActivity extends Activity {
         messages = new ArrayList<>();
         adapter = new CommunityAdapter(messages);
         messagesRecyclerView.setAdapter(adapter);
+        sessionManager = new SessionManager(this);
     }
 
     private void setupClickListeners() {
@@ -105,7 +116,27 @@ public class CommunityActivity extends Activity {
         }
     }
 
+    private boolean hasReadImagesPermission() {
+        if (Build.VERSION.SDK_INT >= 33) {
+            return checkSelfPermission(Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED;
+        } else {
+            return checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        }
+    }
+
+    private void requestReadImagesPermission() {
+        if (Build.VERSION.SDK_INT >= 33) {
+            requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES}, PERMISSION_REQUEST_READ_IMAGES);
+        } else {
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_READ_IMAGES);
+        }
+    }
+
     private void selectImage() {
+        if (!hasReadImagesPermission()) {
+            requestReadImagesPermission();
+            return;
+        }
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -113,6 +144,10 @@ public class CommunityActivity extends Activity {
     }
 
     private void capturePhoto() {
+        if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CAMERA);
+            return;
+        }
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, CAMERA_REQUEST);
     }
@@ -141,7 +176,10 @@ public class CommunityActivity extends Activity {
         }
 
         boolean hasImg = selectedImageUri != null;
-        addMessage("You", messageText, getCurrentTime(), hasImg, 0, 0, hasImg ? selectedImageUri.toString() : null);
+        String userName = (sessionManager != null && sessionManager.isLoggedIn() && sessionManager.getUsername() != null && !sessionManager.getUsername().isEmpty())
+                ? sessionManager.getUsername()
+                : "You";
+        addMessage(userName, messageText, getCurrentTime(), hasImg, 0, 0, hasImg ? selectedImageUri.toString() : null);
         messageEditText.setText("");
         // Clear selected image preview state after sending
         selectedImageUri = null;
@@ -175,8 +213,54 @@ public class CommunityActivity extends Activity {
             selectedImageView.setVisibility(View.VISIBLE);
         } else if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK && data != null) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
-            selectedImageView.setImageBitmap(photo);
-            selectedImageView.setVisibility(View.VISIBLE);
+            if (photo != null) {
+                Uri photoUri = saveBitmapToInternalStorage(photo);
+                if (photoUri != null) {
+                    selectedImageUri = photoUri;
+                    selectedImageView.setImageURI(selectedImageUri);
+                    selectedImageView.setVisibility(View.VISIBLE);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQUEST_CAMERA) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                capturePhoto();
+            } else {
+                Toast.makeText(this, "Camera permission denied", Toast.LENGTH_SHORT).show();
+            }
+        } else if (requestCode == PERMISSION_REQUEST_READ_IMAGES) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                selectImage();
+            } else {
+                Toast.makeText(this, "Storage permission denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private Uri saveBitmapToInternalStorage(Bitmap bitmap) {
+        File imagesDir = new File(getFilesDir(), "community_images");
+        if (!imagesDir.exists()) {
+            imagesDir.mkdirs();
+        }
+        String fileName = "IMG_" + System.currentTimeMillis() + ".png";
+        File imageFile = new File(imagesDir, fileName);
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.flush();
+            return Uri.fromFile(imageFile);
+        } catch (IOException e) {
+            return null;
+        } finally {
+            if (fos != null) {
+                try { fos.close(); } catch (IOException ignored) {}
+            }
         }
     }
 
@@ -291,6 +375,8 @@ public class CommunityActivity extends Activity {
                 holder.userName.setTextColor(getResources().getColor(android.R.color.holo_blue_dark));
             } else if (message.userName.equals("You")) {
                 holder.userName.setTextColor(getResources().getColor(android.R.color.holo_orange_dark));
+            } else {
+                holder.userName.setTextColor(getResources().getColor(android.R.color.black));
             }
         }
 

@@ -42,6 +42,13 @@ public class SessionManager {
     }
 
     /**
+     * Get logged-in username
+     */
+    public String getUsername() {
+        return sharedPreferences.getString(KEY_USERNAME, null);
+    }
+
+    /**
      * Check if user is logged in
      */
     public boolean isLoggedIn() {

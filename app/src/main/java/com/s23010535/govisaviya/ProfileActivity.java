@@ -1,6 +1,7 @@
 package com.s23010535.govisaviya;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,6 +13,7 @@ import com.s23010535.govisaviya.database.DatabaseManager;
 import com.s23010535.govisaviya.models.User;
 
 public class ProfileActivity extends Activity {
+    private static final int REQ_EDIT_PROFILE = 101;
     private ImageView ivAvatar;
     private TextView tvFullName, tvUsername, tvEmail, tvPhone, tvLocation, tvMemberSince;
     private Button btnEditProfile, btnLogout;
@@ -55,14 +57,36 @@ public class ProfileActivity extends Activity {
         }
 
         btnEditProfile.setOnClickListener(v -> {
-            Toast.makeText(this, "Edit Profile coming soon", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(ProfileActivity.this, EditProfileActivity.class);
+            startActivityForResult(i, REQ_EDIT_PROFILE);
         });
 
         btnLogout.setOnClickListener(v -> {
             sessionManager.logoutUser();
             Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
-            finish();
+            Intent i = new Intent(ProfileActivity.this, LoginActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQ_EDIT_PROFILE && resultCode == Activity.RESULT_OK) {
+            // Reload user info
+            SessionManager sessionManager = new SessionManager(this);
+            int userId = sessionManager.getUserId();
+            User user = userId > 0 ? DatabaseManager.getInstance(this).getUser(userId) : null;
+            if (user != null) {
+                tvFullName.setText(user.getFullName() != null ? user.getFullName() : user.getUsername());
+                tvUsername.setText("@" + (user.getUsername() != null ? user.getUsername() : "user"));
+                tvEmail.setText("Email: " + (user.getEmail() != null ? user.getEmail() : "-"));
+                tvPhone.setText("Phone: " + (user.getPhone() != null ? user.getPhone() : "-"));
+                tvLocation.setText("Location: " + (user.getLocation() != null ? user.getLocation() : "-"));
+                tvMemberSince.setText("Member since: " + (user.getCreatedAt() != null ? user.getCreatedAt().toString() : "-"));
+            }
+        }
     }
 }
 

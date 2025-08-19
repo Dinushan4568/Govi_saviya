@@ -1,0 +1,71 @@
+EEI4369 Mobile App User Manual Outline
+Title Page: (Page Limit – 1 Page)
+Include the title of the report, the name of the university, course name and code, student names,
+registration number, MS Teams group number and date
+Table of Contents: (Page Limit – 1 Page)
+List all the main sections and subsections with corresponding page numbers.
+Chapters
+1. Introduction and Problem Statement (Page Limit – 1 Page)
+
+Brief introduction to the app.
+Overview of the real-world problem the app addresses.
+Target users and the context in which the app will be used.
+2. Proposed Solution / Your App Overview (Page Limit – 1 Page)
+
+Description of the mobile app solution.
+Key features and functionalities.
+Goals and objectives of the app.
+3. Mind Map of App Functions (Page Limit – 1 Pages)
+
+Visual mind map showing the structure and flow of the app.
+Overview of - Main Modules/ Sub-functions/ Navigation logic
+4. Implementation Details (Page Limit – 2 Pages)
+
+Technologies Used: Front-end (Android Studio)/Back-end (e.g.Firebase)
+Database Used: MySQL, MongoDB, Firebase Firestore, etc.
+APIs & Integrations: 3rd party APIs or custom APIs used
+5. GitHub Repository - (Page Limit – 1 Pages)
+
+Link to the source code
+Repository structure
+Setup instructions
+6. How to Use the App (User Guide) (Page Limit – 15 Pages)
+
+Step-by-step navigation through the app:
+Home Page / Welcome Screen
+
+Sign Up / Registration Page
+Login Page
+Main Dashboard
+Feature 1: Description + UI Screenshot
+Feature 2: Description + UI Screenshot
+Settings / Profile
+Logout
+flow.
+Each screen includes: Screenshot, Description of UI elements, Explanation of business
+7. Testing and Results (Page Limit – 3 Pages)
+
+Types of testing performed: Unit testing, Integration testing, User testing
+Results and feedback
+Known issues (if any)
+8. Conclusion (Page Limit – 1 Page)
+
+Summary of the app’s value
+Impact of the app on solving the identified problem
+Future improvements or roadmap
+9. References (Page Limit – 1 Page)
+●Cite all the sources, frameworks, libraries, and research materials referenced throughout
+the report using an appropriate citation style.
+10. Appendix (Page Limit – 1 Page)
+●Include any supplementary materials, such as additional code snippets, diagrams, user
+manuals, or any other relevant documentation. If you have any additional documents
+please link them as a URL
+Formatting Settings of the Report
+
+Font: Times New Roman
+Paper size: A4
+Headings : Font Size 14, Bold, Left aligned
+Sub headings: Font size 12, Bold, Left aligned
+Please do not add any code snippets to the report.
+Maximum page count 30 pages.
+If you have any additional documents please link them as a URL.

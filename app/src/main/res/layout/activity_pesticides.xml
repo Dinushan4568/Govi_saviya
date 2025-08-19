@@ -23,7 +23,7 @@
             android:background="@drawable/button_round_white"
             android:contentDescription="Back" />
 
-        <TextView
+    <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -121,7 +121,7 @@
                 android:text="All"
                 android:checked="true"
                 android:layout_marginEnd="8dp"
-                app:chipBackgroundColor="@drawable/chip_background"
+                app:chipBackgroundColor="@color/colorPrimary"
                 app:chipStrokeColor="@color/colorPrimary"
                 app:chipStrokeWidth="2dp" />
 
@@ -130,32 +130,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Insecticides"
-                android:layout_marginEnd="8dp"
-                app:chipBackgroundColor="@drawable/chip_background" />
+                android:layout_marginEnd="8dp" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipFungicides"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Fungicides"
-                android:layout_marginEnd="8dp"
-                app:chipBackgroundColor="@drawable/chip_background" />
+                android:layout_marginEnd="8dp" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipHerbicides"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Herbicides"
-                android:layout_marginEnd="8dp"
-                app:chipBackgroundColor="@drawable/chip_background" />
+                android:layout_marginEnd="8dp" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipOrganic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Organic"
-                android:layout_marginEnd="8dp"
-                app:chipBackgroundColor="@drawable/chip_background" />
+                android:layout_marginEnd="8dp" />
         </LinearLayout>
     </HorizontalScrollView>
 

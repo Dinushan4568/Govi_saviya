@@ -289,7 +289,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:gravity="center"
+    android:gravity="center"
                             android:text="Sat"
                             android:textColor="#999999"
                             android:textSize="12sp"
@@ -427,13 +427,13 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
                         android:text="Upcoming Events"
                         android:textColor="#333333"
                         android:textSize="16sp"
-                        android:textStyle="bold"
+        android:textStyle="bold"
                         android:layout_marginBottom="12dp" />
 
                     <LinearLayout

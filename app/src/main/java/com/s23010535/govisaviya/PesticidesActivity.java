@@ -23,6 +23,7 @@ public class PesticidesActivity extends Activity {
     private ImageButton btnBack, btnSearch, btnCloseSearch;
     private Button btnPestIdentification, btnEmergency;
     private EditText etSearch;
+    private LinearLayout searchContainer;
     private Chip chipAll, chipInsecticides, chipFungicides, chipHerbicides, chipOrganic;
     private RecyclerView rvPesticides;
     
@@ -34,29 +35,46 @@ public class PesticidesActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
         setContentView(R.layout.activity_pesticides);
-        
-        initializeViews();
-        initializeData();
-        setupClickListeners();
-        setupSearch();
-        setupRecyclerView();
-        addSamplePesticides();
+            
+            initializeViews();
+            initializeData();
+            setupClickListeners();
+            setupSearch();
+            setupRecyclerView();
+            addSamplePesticides();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Error loading pesticides page: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            finish();
+        }
     }
     
     private void initializeViews() {
-        btnBack = findViewById(R.id.btnBack);
-        btnSearch = findViewById(R.id.btnSearch);
-        btnCloseSearch = findViewById(R.id.btnCloseSearch);
-        btnPestIdentification = findViewById(R.id.btnPestIdentification);
-        btnEmergency = findViewById(R.id.btnEmergency);
-        etSearch = findViewById(R.id.etSearch);
-        chipAll = findViewById(R.id.chipAll);
-        chipInsecticides = findViewById(R.id.chipInsecticides);
-        chipFungicides = findViewById(R.id.chipFungicides);
-        chipHerbicides = findViewById(R.id.chipHerbicides);
-        chipOrganic = findViewById(R.id.chipOrganic);
-        rvPesticides = findViewById(R.id.rvPesticides);
+        try {
+            btnBack = findViewById(R.id.btnBack);
+            btnSearch = findViewById(R.id.btnSearch);
+            btnCloseSearch = findViewById(R.id.btnCloseSearch);
+            btnPestIdentification = findViewById(R.id.btnPestIdentification);
+            btnEmergency = findViewById(R.id.btnEmergency);
+            etSearch = findViewById(R.id.etSearch);
+            searchContainer = findViewById(R.id.searchContainer);
+            chipAll = findViewById(R.id.chipAll);
+            chipInsecticides = findViewById(R.id.chipInsecticides);
+            chipFungicides = findViewById(R.id.chipFungicides);
+            chipHerbicides = findViewById(R.id.chipHerbicides);
+            chipOrganic = findViewById(R.id.chipOrganic);
+            rvPesticides = findViewById(R.id.rvPesticides);
+            
+            // Verify critical views are not null
+            if (rvPesticides == null || etSearch == null || searchContainer == null) {
+                throw new RuntimeException("Critical views not found in layout");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to initialize views: " + e.getMessage(), e);
+        }
     }
     
     private void initializeData() {
@@ -94,9 +112,14 @@ public class PesticidesActivity extends Activity {
     }
     
     private void setupRecyclerView() {
-        adapter = new PesticideAdapter(pesticides);
-        rvPesticides.setLayoutManager(new LinearLayoutManager(this));
-        rvPesticides.setAdapter(adapter);
+        try {
+            adapter = new PesticideAdapter(pesticides);
+            rvPesticides.setLayoutManager(new LinearLayoutManager(this));
+            rvPesticides.setAdapter(adapter);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Error setting up pesticides list", Toast.LENGTH_SHORT).show();
+        }
     }
     
     private void addSamplePesticides() {
@@ -152,12 +175,12 @@ public class PesticidesActivity extends Activity {
     }
     
     private void toggleSearch() {
-        if (etSearch.getVisibility() == View.VISIBLE) {
-            etSearch.setVisibility(View.GONE);
+        if (searchContainer.getVisibility() == View.VISIBLE) {
+            searchContainer.setVisibility(View.GONE);
             etSearch.setText("");
             filterPesticides();
         } else {
-            etSearch.setVisibility(View.VISIBLE);
+            searchContainer.setVisibility(View.VISIBLE);
             etSearch.requestFocus();
         }
     }

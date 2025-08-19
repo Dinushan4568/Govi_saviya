@@ -242,7 +242,7 @@
             android:layout_marginStart="8dp"
             android:layout_weight="1"
             android:background="@drawable/card_background_semi"
-            android:gravity="center"
+    android:gravity="center"
             android:orientation="vertical"
             android:padding="12dp">
 
@@ -291,7 +291,7 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
-            <TextView
+    <TextView
                 android:id="@+id/sortButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

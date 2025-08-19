@@ -53,7 +53,17 @@ public class HomeActivity extends AppCompatActivity {
         findViewById(R.id.ivFarmCalendar).setOnClickListener(v -> startActivity(new Intent(this, FarmCalendarActivity.class)));
         findViewById(R.id.ivFinancialHelp).setOnClickListener(v -> startActivity(new Intent(this, FinancialHelpActivity.class)));
         findViewById(R.id.ivFindWorkers).setOnClickListener(v -> startActivity(new Intent(this, FindWorkersActivity.class)));
-        findViewById(R.id.ivPesticides).setOnClickListener(v -> startActivity(new Intent(this, PesticidesActivity.class)));
+        findViewById(R.id.ivPesticides).setOnClickListener(v -> {
+            try {
+                Log.d("HomeActivity", "Attempting to navigate to PesticidesActivity");
+                Intent intent = new Intent(this, PesticidesActivity.class);
+                startActivity(intent);
+                Log.d("HomeActivity", "Successfully started PesticidesActivity");
+            } catch (Exception e) {
+                Log.e("HomeActivity", "Error navigating to PesticidesActivity: " + e.getMessage(), e);
+                Toast.makeText(this, "Error opening Pesticides page", Toast.LENGTH_SHORT).show();
+            }
+        });
         findViewById(R.id.ivFeedback).setOnClickListener(v -> startActivity(new Intent(this, FeedbackActivity.class)));
         findViewById(R.id.ivshopping).setOnClickListener(v -> startActivity(new Intent(this, MarketplaceActivity.class)));
         findViewById(R.id.ivChat).setOnClickListener(v -> startActivity(new Intent(this, CommunityActivity.class)));

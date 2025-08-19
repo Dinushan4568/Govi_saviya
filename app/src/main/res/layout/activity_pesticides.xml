@@ -1,19 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
-    android:background="#FFFFFF">
+    android:background="@color/white">
 
-    <TextView
-        android:id="@+id/textViewPesticidesActivity"
-        android:layout_width="wrap_content"
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Pesticides"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:layout_gravity="center" />
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:background="@drawable/header_background"
+        android:gravity="center_vertical">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_back"
+            android:background="@drawable/button_round_white"
+            android:contentDescription="Back" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Pesticides &amp; Pest Control"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_marginStart="16dp" />
+
+        <ImageButton
+            android:id="@+id/btnSearch"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_search"
+            android:background="@drawable/button_round_white"
+            android:contentDescription="Search" />
+    </LinearLayout>
+
+    <!-- Search Bar -->
+    <LinearLayout
+        android:id="@+id/searchContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:background="@drawable/search_background"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/etSearch"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:hint="Search pesticides..."
+            android:background="@drawable/edittext_background"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:textSize="16sp" />
+
+        <ImageButton
+            android:id="@+id/btnCloseSearch"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_more"
+            android:background="@drawable/button_round_white"
+            android:layout_marginStart="8dp"
+            android:contentDescription="Close Search" />
+    </LinearLayout>
+
+    <!-- Quick Actions -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btnPestIdentification"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="Pest Identification"
+            android:background="@drawable/button_green_rounded"
+            android:textColor="@color/white"
+            android:layout_marginEnd="8dp" />
+
+        <Button
+            android:id="@+id/btnEmergency"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="Emergency Contact"
+            android:background="@drawable/button_red_rounded"
+            android:textColor="@color/white"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+
+    <!-- Category Chips -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:paddingHorizontal="16dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="All"
+                android:checked="true"
+                android:layout_marginEnd="8dp"
+                app:chipBackgroundColor="@drawable/chip_background"
+                app:chipStrokeColor="@color/colorPrimary"
+                app:chipStrokeWidth="2dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipInsecticides"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Insecticides"
+                android:layout_marginEnd="8dp"
+                app:chipBackgroundColor="@drawable/chip_background" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFungicides"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fungicides"
+                android:layout_marginEnd="8dp"
+                app:chipBackgroundColor="@drawable/chip_background" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipHerbicides"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Herbicides"
+                android:layout_marginEnd="8dp"
+                app:chipBackgroundColor="@drawable/chip_background" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipOrganic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Organic"
+                android:layout_marginEnd="8dp"
+                app:chipBackgroundColor="@drawable/chip_background" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- Pesticides List -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPesticides"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp"
+        android:clipToPadding="false" />
 
 </LinearLayout>
 

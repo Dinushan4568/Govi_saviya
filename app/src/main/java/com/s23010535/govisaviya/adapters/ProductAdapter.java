@@ -54,22 +54,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         return products.size();
     }
 
-    public void updateProducts(List<Product> newProducts) {
-        this.products = newProducts;
-        notifyDataSetChanged();
-    }
-
-    public void addProduct(Product product) {
-        products.add(product);
-        notifyItemInserted(products.size() - 1);
-    }
-
-    public void removeProduct(int position) {
-        if (position >= 0 && position < products.size()) {
-            products.remove(position);
-            notifyItemRemoved(position);
-        }
-    }
 
     class ProductViewHolder extends RecyclerView.ViewHolder {
         private ImageView productImage;

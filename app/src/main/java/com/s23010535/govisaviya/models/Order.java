@@ -28,15 +28,6 @@ public class Order implements Serializable {
         this.updatedAt = new Date();
     }
 
-    // Constructor with essential parameters
-    public Order(int userId, int productId, int quantity, double totalPrice) {
-        this();
-        this.userId = userId;
-        this.productId = productId;
-        this.quantity = quantity;
-        this.totalPrice = totalPrice;
-    }
-
     // Getters and Setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
@@ -56,7 +47,6 @@ public class Order implements Serializable {
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
 
-    public Date getOrderDate() { return orderDate; }
     public void setOrderDate(Date orderDate) { this.orderDate = orderDate; }
 
     public String getDeliveryAddress() { return deliveryAddress; }
@@ -65,10 +55,8 @@ public class Order implements Serializable {
     public String getPaymentMethod() { return paymentMethod; }
     public void setPaymentMethod(String paymentMethod) { this.paymentMethod = paymentMethod; }
 
-    public Date getCreatedAt() { return createdAt; }
     public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
 
-    public Date getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(Date updatedAt) { this.updatedAt = updatedAt; }
 
     public Product getProduct() { return product; }
@@ -76,46 +64,6 @@ public class Order implements Serializable {
 
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
-
-    // Helper methods
-    public String getFormattedTotalPrice() {
-        return String.format("LKR %.2f", totalPrice);
-    }
-
-    public String getStatusDisplayName() {
-        switch (status.toLowerCase()) {
-            case "pending": return "Pending";
-            case "confirmed": return "Confirmed";
-            case "shipped": return "Shipped";
-            case "delivered": return "Delivered";
-            case "cancelled": return "Cancelled";
-            default: return status;
-        }
-    }
-
-    public boolean isPending() {
-        return "pending".equalsIgnoreCase(status);
-    }
-
-    public boolean isConfirmed() {
-        return "confirmed".equalsIgnoreCase(status);
-    }
-
-    public boolean isShipped() {
-        return "shipped".equalsIgnoreCase(status);
-    }
-
-    public boolean isDelivered() {
-        return "delivered".equalsIgnoreCase(status);
-    }
-
-    public boolean isCancelled() {
-        return "cancelled".equalsIgnoreCase(status);
-    }
-
-    public boolean canBeCancelled() {
-        return isPending() || isConfirmed();
-    }
 
     @Override
     public String toString() {

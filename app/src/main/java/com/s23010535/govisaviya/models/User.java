@@ -59,21 +59,9 @@ public class User implements Serializable {
     public Date getCreatedAt() { return createdAt; }
     public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
 
-    public Date getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(Date updatedAt) { this.updatedAt = updatedAt; }
 
     // Helper methods
-    public boolean isSeller() {
-        return "seller".equalsIgnoreCase(userType);
-    }
-
-    public boolean isAdmin() {
-        return "admin".equalsIgnoreCase(userType);
-    }
-
-    public boolean isBuyer() {
-        return "buyer".equalsIgnoreCase(userType);
-    }
 
     @Override
     public String toString() {

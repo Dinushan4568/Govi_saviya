@@ -207,14 +207,6 @@ public class ProductDataManager {
         return new ArrayList<>(allProducts);
     }
 
-    // Get featured products
-    public List<Product> getFeaturedProducts() {
-        if (!isInitialized) {
-            refreshData();
-        }
-        return new ArrayList<>(featuredProducts);
-    }
-
     // Get products by category
     public List<Product> getProductsByCategory(String category) {
         try {
@@ -235,54 +227,6 @@ public class ProductDataManager {
             }
         }
         return categoryProducts;
-    }
-
-    // Search products
-    public List<Product> searchProducts(String query) {
-        try {
-            // Try database first
-            List<Product> searchResults = databaseManager.searchProducts(query);
-            if (searchResults != null) {
-                return searchResults;
-            }
-        } catch (Exception e) {
-            Log.e("ProductDataManager", "Error searching products in database: " + e.getMessage());
-        }
-
-        // Fallback to local search
-        List<Product> searchResults = new ArrayList<>();
-        String lowerQuery = query.toLowerCase();
-        
-        for (Product product : allProducts) {
-            if (product.getName().toLowerCase().contains(lowerQuery) ||
-                product.getDescription().toLowerCase().contains(lowerQuery) ||
-                product.getSellerName().toLowerCase().contains(lowerQuery) ||
-                (product.getTags() != null && product.getTags().toLowerCase().contains(lowerQuery))) {
-                searchResults.add(product);
-            }
-        }
-        return searchResults;
-    }
-
-    // Get product by ID
-    public Product getProductById(int id) {
-        try {
-            // Try database first
-            Product product = databaseManager.getProduct(id);
-            if (product != null) {
-                return product;
-            }
-        } catch (Exception e) {
-            Log.e("ProductDataManager", "Error getting product by ID from database: " + e.getMessage());
-        }
-
-        // Fallback to local search
-        for (Product product : allProducts) {
-            if (product.getId() == id) {
-                return product;
-            }
-        }
-        return null;
     }
 
     // Add new product (with database integration)
@@ -313,113 +257,5 @@ public class ProductDataManager {
             featuredProducts.add(product);
         }
         return false;
-    }
-
-    // Update product (with database integration)
-    public boolean updateProduct(Product updatedProduct) {
-        try {
-            // Update in database
-            boolean success = databaseManager.updateProduct(updatedProduct);
-            if (success) {
-                // Update local lists
-                for (int i = 0; i < allProducts.size(); i++) {
-                    if (allProducts.get(i).getId() == updatedProduct.getId()) {
-                        allProducts.set(i, updatedProduct);
-                        break;
-                    }
-                }
-                
-                // Update featured products list
-                if (updatedProduct.isFeatured()) {
-                    boolean found = false;
-                    for (int i = 0; i < featuredProducts.size(); i++) {
-                        if (featuredProducts.get(i).getId() == updatedProduct.getId()) {
-                            featuredProducts.set(i, updatedProduct);
-                            found = true;
-                            break;
-                        }
-                    }
-                    if (!found) {
-                        featuredProducts.add(updatedProduct);
-                    }
-                } else {
-                    featuredProducts.removeIf(product -> product.getId() == updatedProduct.getId());
-                }
-                
-                Log.d("ProductDataManager", "Product updated successfully: " + updatedProduct.getName());
-                return true;
-            }
-        } catch (Exception e) {
-            Log.e("ProductDataManager", "Error updating product in database: " + e.getMessage());
-        }
-
-        // Fallback to local only
-        for (int i = 0; i < allProducts.size(); i++) {
-            if (allProducts.get(i).getId() == updatedProduct.getId()) {
-                allProducts.set(i, updatedProduct);
-                break;
-            }
-        }
-        return false;
-    }
-
-    // Delete product (with database integration)
-    public boolean deleteProduct(int productId) {
-        try {
-            // Delete from database
-            boolean success = databaseManager.deleteProduct(productId);
-            if (success) {
-                // Remove from local lists
-                allProducts.removeIf(product -> product.getId() == productId);
-                featuredProducts.removeIf(product -> product.getId() == productId);
-                
-                Log.d("ProductDataManager", "Product deleted successfully: " + productId);
-                return true;
-            }
-        } catch (Exception e) {
-            Log.e("ProductDataManager", "Error deleting product from database: " + e.getMessage());
-        }
-
-        // Fallback to local only
-        allProducts.removeIf(product -> product.getId() == productId);
-        featuredProducts.removeIf(product -> product.getId() == productId);
-        return false;
-    }
-
-    // Get products by price range
-    public List<Product> getProductsByPriceRange(double minPrice, double maxPrice) {
-        List<Product> priceFilteredProducts = new ArrayList<>();
-        for (Product product : allProducts) {
-            if (product.getPrice() >= minPrice && product.getPrice() <= maxPrice) {
-                priceFilteredProducts.add(product);
-            }
-        }
-        return priceFilteredProducts;
-    }
-
-    // Get products by location
-    public List<Product> getProductsByLocation(String location) {
-        List<Product> locationFilteredProducts = new ArrayList<>();
-        for (Product product : allProducts) {
-            if (product.getSellerLocation() != null && 
-                product.getSellerLocation().toLowerCase().contains(location.toLowerCase())) {
-                locationFilteredProducts.add(product);
-            }
-        }
-        return locationFilteredProducts;
-    }
-
-    /**
-     * Get database manager instance
-     */
-    public DatabaseManager getDatabaseManager() {
-        return databaseManager;
-    }
-
-    /**
-     * Check if data is initialized
-     */
-    public boolean isInitialized() {
-        return isInitialized;
     }
 } 

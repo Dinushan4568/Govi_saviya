@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="16dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/header_background"
         android:gravity="center_vertical">
 
@@ -20,7 +21,6 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:src="@drawable/ic_back"
-            android:background="@drawable/button_round_white"
             android:contentDescription="Back" />
 
     <TextView

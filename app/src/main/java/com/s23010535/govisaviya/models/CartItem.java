@@ -39,37 +39,11 @@ public class CartItem implements Serializable {
     public int getQuantity() { return quantity; }
     public void setQuantity(int quantity) { this.quantity = quantity; }
 
-    public Date getCreatedAt() { return createdAt; }
     public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
 
     public Product getProduct() { return product; }
     public void setProduct(Product product) { this.product = product; }
 
-    // Helper methods
-    public double getSubtotal() {
-        if (product != null) {
-            return product.getPrice() * quantity;
-        }
-        return 0.0;
-    }
-
-    public String getFormattedSubtotal() {
-        return String.format("LKR %.2f", getSubtotal());
-    }
-
-    public void incrementQuantity() {
-        this.quantity++;
-    }
-
-    public void decrementQuantity() {
-        if (this.quantity > 1) {
-            this.quantity--;
-        }
-    }
-
-    public boolean isValidQuantity() {
-        return quantity > 0 && (product == null || quantity <= product.getStockQuantity());
-    }
 
     @Override
     public String toString() {

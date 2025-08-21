@@ -164,10 +164,6 @@ public class CommunityActivity extends Activity {
         builder.show();
     }
 
-    private void addSampleMessages() {
-        // Removed sample messages
-    }
-
     private void sendMessage() {
         String messageText = messageEditText.getText().toString().trim();
         if (messageText.isEmpty()) {
@@ -187,11 +183,6 @@ public class CommunityActivity extends Activity {
         saveMessagesToStorage();
         Toast.makeText(this, "Message sent to community!", Toast.LENGTH_SHORT).show();
     }
-
-    private void addMessage(String userName, String message, String time, boolean hasImage, int likes, int replies) {
-        addMessage(userName, message, time, hasImage, likes, replies, null);
-    }
-
     private void addMessage(String userName, String message, String time, boolean hasImage, int likes, int replies, String imageUri) {
         CommunityMessage msg = new CommunityMessage(userName, message, time, hasImage, likes, replies, imageUri);
         messages.add(0, msg);

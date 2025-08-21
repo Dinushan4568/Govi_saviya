@@ -98,16 +98,12 @@ public class Product implements Serializable {
     public int getReviewCount() { return reviewCount; }
     public void setReviewCount(int reviewCount) { this.reviewCount = reviewCount; }
 
-    public boolean isAvailable() { return isAvailable; }
     public void setAvailable(boolean available) { isAvailable = available; }
 
-    public boolean isFeatured() { return isFeatured; }
     public void setFeatured(boolean featured) { isFeatured = featured; }
 
-    public Date getCreatedAt() { return createdAt; }
     public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
 
-    public Date getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(Date updatedAt) { this.updatedAt = updatedAt; }
 
     public String getCondition() { return condition; }
@@ -134,9 +130,6 @@ public class Product implements Serializable {
         return String.format("%s %.2f", currency, price);
     }
 
-    public String getFormattedRating() {
-        return String.format("%.1f (%d)", rating, reviewCount);
-    }
 
     public String getStockStatus() {
         if (stockQuantity <= 0) {
@@ -157,5 +150,13 @@ public class Product implements Serializable {
                 ", category='" + category + '\'' +
                 ", sellerName='" + sellerName + '\'' +
                 '}';
+    }
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public boolean isFeatured() {
+        return isFeatured;
     }
 } 

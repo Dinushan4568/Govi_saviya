@@ -12,6 +12,7 @@ public class SessionManager {
     private static final String PREF_NAME = "GoviSaviyaUserSession";
     private static final String KEY_USER_ID = "user_id";
     private static final String KEY_USERNAME = "username";
+    private static final String KEY_FULL_NAME = "full_name";
     private static final String KEY_IS_LOGGED_IN = "is_logged_in";
 
     private SharedPreferences sharedPreferences;
@@ -31,6 +32,7 @@ public class SessionManager {
         editor.putBoolean(KEY_IS_LOGGED_IN, true);
         editor.putInt(KEY_USER_ID, user.getId());
         editor.putString(KEY_USERNAME, user.getUsername());
+        editor.putString(KEY_FULL_NAME, user.getFullName());
         editor.commit();
     }
 
@@ -46,6 +48,13 @@ public class SessionManager {
      */
     public String getUsername() {
         return sharedPreferences.getString(KEY_USERNAME, null);
+    }
+
+    /**
+     * Get logged-in user's full name
+     */
+    public String getFullName() {
+        return sharedPreferences.getString(KEY_FULL_NAME, null);
     }
 
     /**

@@ -49,11 +49,9 @@ public class ProductDataManager {
                 isInitialized = true;
                 Log.d("ProductDataManager", "Data loaded from database: " + allProducts.size() + " products");
             } else {
-                // Fallback to sample data
+                // Fallback to empty data
                 initializeSampleData();
-                // Populate database with sample data
-                databaseManager.initializeSampleData();
-                Log.d("ProductDataManager", "Sample data initialized and saved to database");
+                Log.d("ProductDataManager", "Empty data initialized");
             }
         } catch (Exception e) {
             Log.e("ProductDataManager", "Error initializing data: " + e.getMessage());
@@ -68,115 +66,6 @@ public class ProductDataManager {
     private void initializeSampleData() {
         allProducts = new ArrayList<>();
         featuredProducts = new ArrayList<>();
-
-        // Sample Direct Food Products
-        Product tomato = new Product("Fresh Organic Tomatoes", "Freshly harvested organic tomatoes from our farm", 120.0, "direct_food", "seller001", "Farmer John");
-        tomato.setSellerLocation("Colombo");
-        tomato.setStockQuantity(50);
-        tomato.setUnit("kg");
-        tomato.setRating(4.5);
-        tomato.setReviewCount(24);
-        tomato.setFeatured(true);
-        tomato.setCondition("Fresh");
-        tomato.setDeliveryOptions("Pickup, Delivery");
-        tomato.setDeliveryCost(50.0);
-        tomato.setTags("organic, fresh, vegetables, tomatoes");
-        allProducts.add(tomato);
-        featuredProducts.add(tomato);
-
-        Product rice = new Product("Red Rice", "Traditional red rice from Anuradhapura", 180.0, "direct_food", "seller002", "Rice Farmer");
-        rice.setSellerLocation("Anuradhapura");
-        rice.setStockQuantity(100);
-        rice.setUnit("kg");
-        rice.setRating(4.8);
-        rice.setReviewCount(15);
-        rice.setFeatured(true);
-        rice.setCondition("Fresh");
-        rice.setDeliveryOptions("Pickup, Delivery");
-        rice.setDeliveryCost(100.0);
-        rice.setTags("rice, traditional, red rice, grains");
-        allProducts.add(rice);
-        featuredProducts.add(rice);
-
-        // Sample Pesticides
-        Product pesticide = new Product("Organic Neem Oil", "Natural pest control solution", 850.0, "pesticides", "seller003", "Agro Supplies");
-        pesticide.setSellerLocation("Kandy");
-        pesticide.setStockQuantity(25);
-        pesticide.setUnit("liter");
-        pesticide.setRating(4.2);
-        pesticide.setReviewCount(8);
-        pesticide.setCondition("New");
-        pesticide.setDeliveryOptions("Pickup, Delivery");
-        pesticide.setDeliveryCost(75.0);
-        pesticide.setTags("organic, neem, pest control, natural");
-        allProducts.add(pesticide);
-
-        // Sample Equipment Rental
-        Product tractor = new Product("Tractor Rental", "Modern tractor for farming operations", 2500.0, "rental", "seller004", "Equipment Rentals");
-        tractor.setSellerLocation("Galle");
-        tractor.setStockQuantity(3);
-        tractor.setUnit("day");
-        tractor.setRating(4.6);
-        tractor.setReviewCount(12);
-        tractor.setFeatured(true);
-        tractor.setCondition("Used");
-        tractor.setDeliveryOptions("Pickup only");
-        tractor.setDeliveryCost(0.0);
-        tractor.setTags("tractor, rental, equipment, farming");
-        allProducts.add(tractor);
-        featuredProducts.add(tractor);
-
-        // Sample Seeds
-        Product seeds = new Product("Hybrid Corn Seeds", "High-yield hybrid corn seeds", 450.0, "seeds", "seller005", "Seed Company");
-        seeds.setSellerLocation("Jaffna");
-        seeds.setStockQuantity(200);
-        seeds.setUnit("packet");
-        seeds.setRating(4.4);
-        seeds.setReviewCount(18);
-        seeds.setCondition("New");
-        seeds.setDeliveryOptions("Pickup, Delivery");
-        seeds.setDeliveryCost(60.0);
-        seeds.setTags("seeds, corn, hybrid, high yield");
-        allProducts.add(seeds);
-
-        // Sample Labor Services
-        Product labor = new Product("Harvesting Services", "Professional harvesting team", 1500.0, "labor", "seller006", "Harvest Team");
-        labor.setSellerLocation("Polonnaruwa");
-        labor.setStockQuantity(10);
-        labor.setUnit("day");
-        labor.setRating(4.7);
-        labor.setReviewCount(6);
-        labor.setCondition("Service");
-        labor.setDeliveryOptions("On-site service");
-        labor.setDeliveryCost(0.0);
-        labor.setTags("harvesting, labor, services, professional");
-        allProducts.add(labor);
-
-        // Sample Other Items
-        Product fertilizer = new Product("Organic Compost", "Rich organic compost for better yields", 350.0, "others", "seller007", "Organic Farm");
-        fertilizer.setSellerLocation("Matara");
-        fertilizer.setStockQuantity(75);
-        fertilizer.setUnit("bag");
-        fertilizer.setRating(4.3);
-        fertilizer.setReviewCount(11);
-        fertilizer.setCondition("New");
-        fertilizer.setDeliveryOptions("Pickup, Delivery");
-        fertilizer.setDeliveryCost(80.0);
-        fertilizer.setTags("compost, organic, fertilizer, soil");
-        allProducts.add(fertilizer);
-
-        Product tools = new Product("Garden Tool Set", "Complete set of essential garden tools", 1200.0, "others", "seller008", "Tool Shop");
-        tools.setSellerLocation("Kurunegala");
-        tools.setStockQuantity(15);
-        tools.setUnit("set");
-        tools.setRating(4.1);
-        tools.setReviewCount(9);
-        tools.setCondition("New");
-        tools.setDeliveryOptions("Pickup, Delivery");
-        tools.setDeliveryCost(100.0);
-        tools.setTags("tools, garden, set, essential");
-        allProducts.add(tools);
-
         isInitialized = true;
     }
 
@@ -257,5 +146,123 @@ public class ProductDataManager {
             featuredProducts.add(product);
         }
         return false;
+    }
+
+    // Update existing product
+    public boolean updateProduct(Product product) {
+        try {
+            // Update in database
+            boolean dbSuccess = databaseManager.updateProduct(product);
+            if (dbSuccess) {
+                // Update in local lists
+                for (int i = 0; i < allProducts.size(); i++) {
+                    if (allProducts.get(i).getId() == product.getId()) {
+                        allProducts.set(i, product);
+                        break;
+                    }
+                }
+                
+                // Update in featured products if needed
+                if (product.isFeatured()) {
+                    boolean foundInFeatured = false;
+                    for (int i = 0; i < featuredProducts.size(); i++) {
+                        if (featuredProducts.get(i).getId() == product.getId()) {
+                            featuredProducts.set(i, product);
+                            foundInFeatured = true;
+                            break;
+                        }
+                    }
+                    if (!foundInFeatured) {
+                        featuredProducts.add(product);
+                    }
+                } else {
+                    // Remove from featured if not featured anymore
+                    featuredProducts.removeIf(p -> p.getId() == product.getId());
+                }
+                
+                Log.d("ProductDataManager", "Product updated successfully: " + product.getName());
+                return true;
+            }
+        } catch (Exception e) {
+            Log.e("ProductDataManager", "Error updating product in database: " + e.getMessage());
+        }
+        return false;
+    }
+
+    // Delete product
+    public boolean deleteProduct(int productId) {
+        try {
+            // Delete from database
+            boolean dbSuccess = databaseManager.deleteProduct(productId);
+            if (dbSuccess) {
+                // Remove from local lists
+                allProducts.removeIf(p -> p.getId() == productId);
+                featuredProducts.removeIf(p -> p.getId() == productId);
+                
+                Log.d("ProductDataManager", "Product deleted successfully: ID " + productId);
+                return true;
+            }
+        } catch (Exception e) {
+            Log.e("ProductDataManager", "Error deleting product from database: " + e.getMessage());
+        }
+        return false;
+    }
+
+    // Get product by ID
+    public Product getProductById(int productId) {
+        try {
+            // Try database first
+            Product dbProduct = databaseManager.getProductById(productId);
+            if (dbProduct != null) {
+                return dbProduct;
+            }
+        } catch (Exception e) {
+            Log.e("ProductDataManager", "Error getting product by ID from database: " + e.getMessage());
+        }
+
+        // Fallback to local search
+        for (Product product : allProducts) {
+            if (product.getId() == productId) {
+                return product;
+            }
+        }
+        return null;
+    }
+
+    // Get products by seller
+    public List<Product> getProductsBySeller(String sellerId) {
+        try {
+            // Try database first
+            List<Product> sellerProducts = databaseManager.getProductsBySeller(sellerId);
+            if (sellerProducts != null) {
+                return sellerProducts;
+            }
+        } catch (Exception e) {
+            Log.e("ProductDataManager", "Error getting products by seller from database: " + e.getMessage());
+        }
+
+        // Fallback to local filtering
+        List<Product> sellerProducts = new ArrayList<>();
+        for (Product product : allProducts) {
+            if (product.getSellerId().equals(sellerId)) {
+                sellerProducts.add(product);
+            }
+        }
+        return sellerProducts;
+    }
+
+    // Search products
+    public List<Product> searchProducts(String query) {
+        List<Product> searchResults = new ArrayList<>();
+        String lowerQuery = query.toLowerCase();
+        
+        for (Product product : allProducts) {
+            if (product.getName().toLowerCase().contains(lowerQuery) ||
+                product.getDescription().toLowerCase().contains(lowerQuery) ||
+                (product.getTags() != null && product.getTags().toLowerCase().contains(lowerQuery))) {
+                searchResults.add(product);
+            }
+        }
+        return searchResults;
     }
 } 

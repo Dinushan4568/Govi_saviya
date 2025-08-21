@@ -53,6 +53,8 @@
         <activity android:name=".NotificationActivity" android:exported="false" />
         <activity android:name=".SellProductActivity" />
         <activity android:name=".ProductListActivity" />
+        <activity android:name=".MyProductsActivity" />
+        <activity android:name=".EditProductActivity" />
         <activity android:name=".ComingSoonActivity" />
         <activity android:name=".EditProfileActivity" />
 

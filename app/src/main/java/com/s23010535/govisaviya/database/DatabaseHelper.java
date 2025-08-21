@@ -267,6 +267,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return products;
     }
 
+    public List<Product> getProductsBySeller(String sellerId) {
+        List<Product> products = new ArrayList<>();
+        String selectQuery = "SELECT * FROM " + TABLE_PRODUCTS + 
+                " WHERE " + COLUMN_PRODUCT_SELLER_ID + "=? AND " + COLUMN_PRODUCT_IS_AVAILABLE + "=1" +
+                " ORDER BY " + COLUMN_CREATED_AT + " DESC";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{sellerId});
+
+        if (cursor.moveToFirst()) {
+            do {
+                Product product = cursorToProduct(cursor);
+                products.add(product);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return products;
+    }
+
     public List<Product> searchProducts(String query) {
         List<Product> products = new ArrayList<>();
         String selectQuery = "SELECT * FROM " + TABLE_PRODUCTS + 
@@ -674,50 +695,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cartItem;
     }
 
-    // Method to populate database with sample data
-    public void populateSampleData() {
-        Log.d("DatabaseHelper", "Populating sample data...");
-        
-        // Add sample users
-        User user1 = new User("john_doe", "john@example.com", "hashed_password", "John Doe");
-        user1.setPhone("+94 71 123 4567");
-        user1.setLocation("Colombo");
-        user1.setUserType("buyer");
-        addUser(user1);
 
-        User user2 = new User("farmer_jane", "jane@example.com", "hashed_password", "Jane Smith");
-        user2.setPhone("+94 77 987 6543");
-        user2.setLocation("Kandy");
-        user2.setUserType("seller");
-        addUser(user2);
-
-        // Add sample products
-        Product tomato = new Product("Fresh Organic Tomatoes", "Freshly harvested organic tomatoes from our farm", 120.0, "direct_food", "seller001", "Farmer John");
-        tomato.setSellerLocation("Colombo");
-        tomato.setStockQuantity(50);
-        tomato.setUnit("kg");
-        tomato.setRating(4.5);
-        tomato.setReviewCount(24);
-        tomato.setFeatured(true);
-        tomato.setCondition("Fresh");
-        tomato.setDeliveryOptions("Pickup, Delivery");
-        tomato.setDeliveryCost(50.0);
-        tomato.setTags("organic, fresh, vegetables, tomatoes");
-        addProduct(tomato);
-
-        Product rice = new Product("Red Rice", "Traditional red rice from Anuradhapura", 180.0, "direct_food", "seller002", "Rice Farmer");
-        rice.setSellerLocation("Anuradhapura");
-        rice.setStockQuantity(100);
-        rice.setUnit("kg");
-        rice.setRating(4.8);
-        rice.setReviewCount(15);
-        rice.setFeatured(true);
-        rice.setCondition("Fresh");
-        rice.setDeliveryOptions("Pickup, Delivery");
-        rice.setDeliveryCost(100.0);
-        rice.setTags("rice, traditional, red rice, grains");
-        addProduct(rice);
-
-        Log.d("DatabaseHelper", "Sample data populated successfully");
-    }
 } 

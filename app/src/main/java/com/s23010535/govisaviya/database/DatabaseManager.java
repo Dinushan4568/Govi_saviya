@@ -61,6 +61,25 @@ public class DatabaseManager {
     }
 
     /**
+     * Get a product by ID (alias for getProduct)
+     */
+    public Product getProductById(int productId) {
+        return getProduct(productId);
+    }
+
+    /**
+     * Get products by seller
+     */
+    public List<Product> getProductsBySeller(String sellerId) {
+        try {
+            return databaseHelper.getProductsBySeller(sellerId);
+        } catch (Exception e) {
+            Log.e("DatabaseManager", "Error getting products by seller: " + e.getMessage());
+            return null;
+        }
+    }
+
+    /**
      * Get all products
      */
     public List<Product> getAllProducts() {
@@ -223,15 +242,5 @@ public class DatabaseManager {
             return -1;
         }
     }
-    /**
-     * Initialize database with sample data
-     */
-    public void initializeSampleData() {
-        try {
-            databaseHelper.populateSampleData();
-            Log.d("DatabaseManager", "Sample data initialized successfully");
-        } catch (Exception e) {
-            Log.e("DatabaseManager", "Error initializing sample data: " + e.getMessage());
-        }
-    }
+
 } 

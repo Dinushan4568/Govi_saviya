@@ -23,6 +23,7 @@ import androidx.core.content.ContextCompat;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.s23010535.govisaviya.data.ProductDataManager;
+import com.s23010535.govisaviya.data.SessionManager;
 import com.s23010535.govisaviya.models.Product;
 
 import java.io.IOException;
@@ -126,15 +127,18 @@ public class SellProductActivity extends AppCompatActivity {
 
     private Uri saveBitmapToCache(Bitmap bitmap) {
         try {
-            File cachePath = new File(getCacheDir(), "images");
-            cachePath.mkdirs();
-            String fileName = "product_" + UUID.randomUUID().toString() + ".jpg";
-            File file = new File(cachePath, fileName);
-            OutputStream stream = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
-            stream.flush();
-            stream.close();
-            return Uri.fromFile(file);
+            // Save to internal storage instead of cache for persistence
+            File imagesDir = new File(getFilesDir(), "product_images");
+            if (!imagesDir.exists()) {
+                imagesDir.mkdirs();
+            }
+            String fileName = "product_" + System.currentTimeMillis() + ".jpg";
+            File imageFile = new File(imagesDir, fileName);
+            FileOutputStream fos = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+            fos.flush();
+            fos.close();
+            return Uri.fromFile(imageFile);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -177,8 +181,26 @@ public class SellProductActivity extends AppCompatActivity {
             return;
         }
 
+        // Get current user information
+        SessionManager sessionManager = new SessionManager(this);
+        if (!sessionManager.isLoggedIn()) {
+            Toast.makeText(this, "Please login to add products", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            return;
+        }
+
+        String sellerId = String.valueOf(sessionManager.getUserId());
+        String sellerName = sessionManager.getFullName();
+        if (sellerName == null || sellerName.isEmpty()) {
+            sellerName = sessionManager.getUsername();
+        }
+        if (sellerName == null || sellerName.isEmpty()) {
+            sellerName = "User " + sellerId;
+        }
+
         // Create and save product
-        Product product = new Product(name, description, price, categoryId, "seller001", "You");
+        Product product = new Product(name, description, price, categoryId, sellerId, sellerName);
         product.setImageUri(selectedImageUri.toString());
         product.setStockQuantity(quantity);
         product.setSellerLocation(location);

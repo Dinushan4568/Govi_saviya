@@ -118,6 +118,34 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/btnMyProducts"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:background="@drawable/action_button_background"
+                android:padding="16dp"
+                android:layout_marginStart="4dp"
+                android:gravity="center"
+                android:clickable="true">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_sell"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="My Products"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textColor="#2196F3" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/btnMyOrders"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -125,7 +153,7 @@
                 android:orientation="vertical"
                 android:background="@drawable/action_button_background"
                 android:padding="16dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="4dp"
                 android:gravity="center"
                 android:clickable="true">
 

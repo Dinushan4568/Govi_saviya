@@ -101,6 +101,21 @@ public class MarketplaceActivity extends Activity implements ProductAdapter.OnPr
             }
         });
 
+        // My Products
+        findViewById(R.id.btnMyProducts).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!sessionManager.isLoggedIn()) {
+                    showToast("Please login to view your products");
+                    Intent intent = new Intent(MarketplaceActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    return;
+                }
+                Intent intent = new Intent(MarketplaceActivity.this, MyProductsActivity.class);
+                startActivity(intent);
+            }
+        });
+
         // My Orders
         btnMyOrders.setOnClickListener(new View.OnClickListener() {
             @Override

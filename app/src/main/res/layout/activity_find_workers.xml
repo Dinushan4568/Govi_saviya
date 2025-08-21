@@ -131,27 +131,27 @@
             <com.google.android.material.chip.Chip
                 android:id="@+id/allWorkersChip"
                 android:layout_width="wrap_content"
-                android:layout_height="32dp"
+                android:layout_height="52dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/chip_selected_background"
                 android:text="All"
-                android:textColor="#FFFFFF"
+                android:textColor="#000000"
                 android:textSize="12sp" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/plantingChip"
                 android:layout_width="wrap_content"
-                android:layout_height="32dp"
+                android:layout_height="52dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/chip_background"
                 android:text="🌱 Planting"
                 android:textColor="#666666"
-                android:textSize="12sp" />
+                android:textSize="12dp" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/harvestingChip"
                 android:layout_width="wrap_content"
-                android:layout_height="32dp"
+                android:layout_height="52dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/chip_background"
                 android:text="🌾 Harvesting"
@@ -161,7 +161,7 @@
             <com.google.android.material.chip.Chip
                 android:id="@+id/irrigationChip"
                 android:layout_width="wrap_content"
-                android:layout_height="32dp"
+                android:layout_height="52dp"
                 android:background="@drawable/chip_background"
                 android:text="💧 Irrigation"
                 android:textColor="#666666"
@@ -174,7 +174,7 @@
     <!-- Stats Section -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="82dp"
         android:layout_marginTop="8dp"
         android:background="#FFFFFF"
         android:orientation="horizontal"
@@ -185,7 +185,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:background="@drawable/card_background_semi"
+            android:background="@color/brown_primary"
             android:gravity="center"
             android:orientation="vertical"
             android:padding="12dp">
@@ -213,7 +213,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="4dp"
             android:layout_weight="1"
-            android:background="@drawable/card_background_semi"
+            android:background="@color/blue_primary"
             android:gravity="center"
             android:orientation="vertical"
             android:padding="12dp">
@@ -241,8 +241,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_weight="1"
-            android:background="@drawable/card_background_semi"
-    android:gravity="center"
+            android:background="@color/green_primary"
+            android:gravity="center"
             android:orientation="vertical"
             android:padding="12dp">
 
@@ -251,7 +251,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="4.8"
-                android:textColor="#2196F3"
+                android:textColor="#0A0B0B"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -291,7 +291,7 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
-    <TextView
+            <TextView
                 android:id="@+id/sortButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

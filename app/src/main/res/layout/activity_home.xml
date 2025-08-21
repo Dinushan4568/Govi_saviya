@@ -85,37 +85,37 @@
 
             <GridLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:columnCount="2"
                 android:rowCount="2">
 
                 <ImageView
                     android:id="@+id/ivMarketplace"
-                    android:layout_width="190dp"
-                    android:layout_height="190dp"
+                    android:layout_width="170dp"
+                    android:layout_height="170dp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/bg_marketplace_icon" />
 
                 <ImageView
                     android:id="@+id/ivVideoTutorials"
-                    android:layout_width="190dp"
-                    android:layout_height="190dp"
+                    android:layout_width="170dp"
+                    android:layout_height="170dp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/bg_tutorials_icon1"
                     android:padding="10dp" />
 
                 <ImageView
                     android:id="@+id/ivExpertAdvice"
-                    android:layout_width="190dp"
-                    android:layout_height="190dp"
+                    android:layout_width="170dp"
+                    android:layout_height="170dp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/bg_expert_advice_icon"
                     android:padding="10dp" />
 
                 <ImageView
                     android:id="@+id/ivCommunity"
-                    android:layout_width="190dp"
-                    android:layout_height="190dp"
+                    android:layout_width="170dp"
+                    android:layout_height="170dp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/bg_community_icon"
                     android:padding="10dp" />
@@ -147,48 +147,48 @@
 
                 <ImageView
                     android:id="@+id/ivDiseaseAlert"
-                    android:layout_width="126dp"
-                    android:layout_height="128dp"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/bg_diseases_icon"
                     android:padding="8dp" />
 
                 <ImageView
                     android:id="@+id/ivFarmCalendar"
-                    android:layout_width="129dp"
-                    android:layout_height="128dp"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/bg_calendar_icon"
                     android:padding="8dp" />
 
                 <ImageView
                     android:id="@+id/ivFinancialHelp"
-                    android:layout_width="119dp"
-                    android:layout_height="129dp"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/bg_financial_icon"
                     android:padding="8dp" />
 
                 <ImageView
                     android:id="@+id/ivFindWorkers"
-                    android:layout_width="121dp"
-                    android:layout_height="125dp"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/bg_workers_icon"
                     android:padding="8dp" />
 
                 <ImageView
                     android:id="@+id/ivPesticides"
-                    android:layout_width="132dp"
-                    android:layout_height="125dp"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/bg_pesticides_icon"
                     android:padding="8dp" />
 
                 <ImageView
                     android:id="@+id/ivFeedback"
-                    android:layout_width="122dp"
-                    android:layout_height="125dp"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/bg_feedback_icon"
                     android:padding="8dp" />
@@ -209,35 +209,35 @@
 
             <ImageView
                 android:id="@+id/ivHome"
-                android:layout_width="80dp"
+                android:layout_width="75dp"
                 android:layout_height="match_parent"
                 android:padding="15dp"
                 android:src="@drawable/ic_home" />
 
             <ImageView
                 android:id="@+id/ivshopping"
-                android:layout_width="80dp"
+                android:layout_width="75dp"
                 android:layout_height="match_parent"
                 android:padding="15dp"
                 android:src="@drawable/ic_shopping_cart" />
 
             <ImageView
                 android:id="@+id/ivChat"
-                android:layout_width="80dp"
+                android:layout_width="75dp"
                 android:layout_height="match_parent"
                 android:padding="15dp"
                 android:src="@drawable/ic_chat" />
 
             <ImageView
                 android:id="@+id/ivLearn"
-                android:layout_width="80dp"
+                android:layout_width="75dp"
                 android:layout_height="match_parent"
                 android:padding="15dp"
                 android:src="@drawable/ic_learn" />
 
             <ImageView
                 android:id="@+id/ivProfile"
-                android:layout_width="80dp"
+                android:layout_width="75dp"
                 android:layout_height="match_parent"
                 android:padding="15dp"
                 android:src="@drawable/ic_user" />

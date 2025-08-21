@@ -199,18 +199,32 @@ public class CommunityActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            selectedImageUri = data.getData();
-            selectedImageView.setImageURI(selectedImageUri);
-            selectedImageView.setVisibility(View.VISIBLE);
+            try {
+                selectedImageUri = data.getData();
+                selectedImageView.setImageURI(selectedImageUri);
+                selectedImageView.setVisibility(View.VISIBLE);
+            } catch (Exception e) {
+                Toast.makeText(this, "Error loading image", Toast.LENGTH_SHORT).show();
+                selectedImageUri = null;
+                selectedImageView.setVisibility(View.GONE);
+            }
         } else if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK && data != null) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            if (photo != null) {
-                Uri photoUri = saveBitmapToInternalStorage(photo);
-                if (photoUri != null) {
-                    selectedImageUri = photoUri;
-                    selectedImageView.setImageURI(selectedImageUri);
-                    selectedImageView.setVisibility(View.VISIBLE);
+            try {
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                if (photo != null) {
+                    Uri photoUri = saveBitmapToInternalStorage(photo);
+                    if (photoUri != null) {
+                        selectedImageUri = photoUri;
+                        selectedImageView.setImageURI(selectedImageUri);
+                        selectedImageView.setVisibility(View.VISIBLE);
+                    } else {
+                        Toast.makeText(this, "Error saving photo", Toast.LENGTH_SHORT).show();
+                    }
                 }
+            } catch (Exception e) {
+                Toast.makeText(this, "Error processing photo", Toast.LENGTH_SHORT).show();
+                selectedImageUri = null;
+                selectedImageView.setVisibility(View.GONE);
             }
         }
     }
@@ -234,24 +248,30 @@ public class CommunityActivity extends Activity {
     }
 
     private Uri saveBitmapToInternalStorage(Bitmap bitmap) {
-        File imagesDir = new File(getFilesDir(), "community_images");
-        if (!imagesDir.exists()) {
-            imagesDir.mkdirs();
-        }
-        String fileName = "IMG_" + System.currentTimeMillis() + ".png";
-        File imageFile = new File(imagesDir, fileName);
-        FileOutputStream fos = null;
         try {
-            fos = new FileOutputStream(imageFile);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-            fos.flush();
-            return Uri.fromFile(imageFile);
-        } catch (IOException e) {
-            return null;
-        } finally {
-            if (fos != null) {
-                try { fos.close(); } catch (IOException ignored) {}
+            File imagesDir = new File(getFilesDir(), "community_images");
+            if (!imagesDir.exists()) {
+                if (!imagesDir.mkdirs()) {
+                    return null;
+                }
             }
+            String fileName = "IMG_" + System.currentTimeMillis() + ".png";
+            File imageFile = new File(imagesDir, fileName);
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream(imageFile);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                fos.flush();
+                return Uri.fromFile(imageFile);
+            } catch (IOException e) {
+                return null;
+            } finally {
+                if (fos != null) {
+                    try { fos.close(); } catch (IOException ignored) {}
+                }
+            }
+        } catch (Exception e) {
+            return null;
         }
     }
 
@@ -303,21 +323,32 @@ public class CommunityActivity extends Activity {
     }
 
     private void loadMessagesFromStorage() {
-        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        String json = prefs.getString(KEY_MESSAGES, null);
-        messages.clear();
-        if (json != null) {
-            try {
-                JSONArray arr = new JSONArray(json);
-                for (int i = 0; i < arr.length(); i++) {
-                    JSONObject obj = arr.getJSONObject(i);
-                    messages.add(CommunityMessage.fromJson(obj));
+        try {
+            SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+            String json = prefs.getString(KEY_MESSAGES, null);
+            messages.clear();
+            if (json != null) {
+                try {
+                    JSONArray arr = new JSONArray(json);
+                    for (int i = 0; i < arr.length(); i++) {
+                        try {
+                            JSONObject obj = arr.getJSONObject(i);
+                            messages.add(CommunityMessage.fromJson(obj));
+                        } catch (JSONException e) {
+                            // Skip malformed individual messages
+                        }
+                    }
+                } catch (JSONException e) {
+                    // Clear corrupted data
+                    prefs.edit().remove(KEY_MESSAGES).apply();
                 }
-            } catch (JSONException e) {
-                // ignore malformed
             }
+            adapter.notifyDataSetChanged();
+        } catch (Exception e) {
+            // If there's any error, start with empty messages
+            messages.clear();
+            adapter.notifyDataSetChanged();
         }
-        adapter.notifyDataSetChanged();
     }
 
     private void saveMessagesToStorage() {
@@ -353,8 +384,19 @@ public class CommunityActivity extends Activity {
             holder.messageText.setText(message.message);
 
             if (message.imageUri != null && !message.imageUri.isEmpty()) {
-                holder.messageImage.setVisibility(View.VISIBLE);
-                holder.messageImage.setImageURI(Uri.parse(message.imageUri));
+                try {
+                    Uri imageUri = Uri.parse(message.imageUri);
+                    // Check if the URI is still accessible
+                    if (imageUri != null) {
+                        holder.messageImage.setVisibility(View.VISIBLE);
+                        holder.messageImage.setImageURI(imageUri);
+                    } else {
+                        holder.messageImage.setVisibility(View.GONE);
+                    }
+                } catch (Exception e) {
+                    // If there's any error loading the image, hide it
+                    holder.messageImage.setVisibility(View.GONE);
+                }
             } else {
                 holder.messageImage.setVisibility(View.GONE);
             }

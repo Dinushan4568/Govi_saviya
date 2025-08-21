@@ -258,6 +258,5 @@ public class MarketplaceActivity extends Activity implements ProductAdapter.OnPr
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        // You can add custom back button behavior here if needed
     }
 } 

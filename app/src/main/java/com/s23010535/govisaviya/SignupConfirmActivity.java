@@ -21,7 +21,7 @@ public class SignupConfirmActivity extends AppCompatActivity {
         setupClickListeners();
 
         // Auto navigate to home after 3 seconds
-        handler = new Handler();
+        handler = new Handler(android.os.Looper.getMainLooper());
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {

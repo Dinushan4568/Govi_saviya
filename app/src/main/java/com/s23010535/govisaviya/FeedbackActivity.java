@@ -163,11 +163,11 @@ public class FeedbackActivity extends Activity {
                 
                 // Change color when approaching limit
                 if (charCount > 450) {
-                    charCountText.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+                    charCountText.setTextColor(getResources().getColor(android.R.color.holo_red_dark, getTheme()));
                 } else if (charCount > 400) {
-                    charCountText.setTextColor(getResources().getColor(android.R.color.holo_orange_dark));
+                    charCountText.setTextColor(getResources().getColor(android.R.color.holo_orange_dark, getTheme()));
                 } else {
-                    charCountText.setTextColor(getResources().getColor(android.R.color.darker_gray));
+                    charCountText.setTextColor(getResources().getColor(android.R.color.darker_gray, getTheme()));
                 }
             }
         });
@@ -262,7 +262,7 @@ public class FeedbackActivity extends Activity {
         successLayout.setVisibility(View.VISIBLE);
 
         // Auto-hide after 3 seconds and go back
-        new android.os.Handler().postDelayed(() -> {
+        new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
             finish();
         }, 3000);
     }

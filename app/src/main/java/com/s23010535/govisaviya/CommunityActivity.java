@@ -71,7 +71,7 @@ public class CommunityActivity extends Activity {
         
         // Initialize RecyclerView
         messagesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        messagesRecyclerView.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+        messagesRecyclerView.setBackgroundColor(getResources().getColor(android.R.color.transparent, getTheme()));
     }
 
     private void initializeData() {
@@ -403,13 +403,13 @@ public class CommunityActivity extends Activity {
 
             // Set different colors for different user types
             if (message.userName.equals("Expert Advisor")) {
-                holder.userName.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
+                holder.userName.setTextColor(getResources().getColor(android.R.color.holo_green_dark, getTheme()));
             } else if (message.userName.equals("Community Admin")) {
-                holder.userName.setTextColor(getResources().getColor(android.R.color.holo_blue_dark));
+                holder.userName.setTextColor(getResources().getColor(android.R.color.holo_blue_dark, getTheme()));
             } else if (message.userName.equals("You")) {
-                holder.userName.setTextColor(getResources().getColor(android.R.color.holo_orange_dark));
+                holder.userName.setTextColor(getResources().getColor(android.R.color.holo_orange_dark, getTheme()));
             } else {
-                holder.userName.setTextColor(getResources().getColor(android.R.color.black));
+                holder.userName.setTextColor(getResources().getColor(android.R.color.black, getTheme()));
             }
         }
 
